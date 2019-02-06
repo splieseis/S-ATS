@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <string>
 #include "Applicant.class.hpp"
 
 using namespace std;
@@ -30,14 +31,30 @@ void imprint()
 
 void listCandidates(vector <Applicant> candidates)
 {
+	int i {1};
 	char pause {};
+	string firstName {};
+	string lastName {};
+	string jobTitle {};
+
 	system("CLS");
 	printHeader();
 	cout << endl;
+	cout << "-------------------------------------Candidates-------------------------------------" << endl << endl;
 	if (candidates.size() != 0)
 	{
+		cout << "    |First Name      Last Name      |Job Title" << endl;
 		for(auto applicant: candidates)
-			cout << applicant.getFirstName() << " " << applicant.getLastName() << endl;
+		{
+			firstName = applicant.getFirstName();
+			lastName = applicant.getLastName();
+			jobTitle = applicant.getJobTitle();
+			firstName.resize(15, ' ');
+			lastName.resize(15, ' ');
+			jobTitle.resize(15, ' ');
+			cout << i++ << "   |" << firstName << " " << lastName << "|" << jobTitle << endl;
+			
+		}
 	}
 	else
 		cout << "List is empty! - Add candidates first, thank you!\n";
@@ -56,6 +73,18 @@ Applicant newCandidate(void)
 	cout << "Last Name: ";
 	cin >> input;
 	newCandidate.setLastName(input);
+	cout << "Job Title: ";
+	cin >> input;
+	newCandidate.setJobTitle(input);
+	cout << "Location: ";
+	cin >> input;
+	newCandidate.setLocation(input);
+	cout << "Phone Number: ";
+	cin >> input;
+	newCandidate.setPhoneNumber(input);
+	cout << "Email: ";
+	cin >> input;
+	newCandidate.setEmail(input);
 	cout << "New Candidate: " << newCandidate.getFirstName() << " "<< newCandidate.getLastName() << " successfully created.\n";
 	cin >> input;
 	system("CLS");
