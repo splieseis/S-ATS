@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <locale>
 #include "Applicant.class.hpp"
 
 using namespace std;
@@ -15,6 +16,17 @@ void printHeader()
 		cout << "-                         **       ***   ***     ***       **                      -" << endl;
 		cout << "-                      *****      ***     ***    ***    *****                      -" << endl;
 		cout << "------------------------------------------------------------------------------------" << endl;
+		
+/*		cout << "------------------------------------------------------------------------------------" << endl;
+		cout << "-                      *****           *      ********* *****                      -" << endl;
+		cout << "-                      ** **          ***     ********* ** **                      -" << endl;
+		cout << "-                      **            ** **       ***    **                         -" << endl;
+		cout << "-                      *****  ***   **   **      ***    *****                      -" << endl;
+		cout << "-                         **  ***  *********     ***       **                      -" << endl;
+		cout << "-                      ** **      ***     ***    ***    ** **                      -" << endl;
+		cout << "-                      *****     ***       ***   ***    *****                      -" << endl;
+		cout << "------------------------------------------------------------------------------------" << endl;
+*/
 
 /*		cout << "------------------------------------------------------------------------------------" << endl;
 		cout << "-----------------------     --------   ----         ----     -----------------------" << endl;
@@ -55,6 +67,45 @@ void details(vector <Applicant> candidates, int i)
 	system("CLS");
 }
 
+void updateCandidate(vector <Applicant> candidates)
+{
+	int i {1};
+	int input {};
+	string pause {};
+	string firstName {};
+	string lastName {};
+	string jobTitle {};
+
+	system("CLS");
+	printHeader();
+	cout << endl;
+	cout << "--------------------------------Update a Candidate----------------------------------" << endl << endl;
+	if (candidates.size() != 0)
+	{
+		cout << "Index\t|First Name     |Last Name      |Job Title" << endl;
+		for(auto applicant: candidates)
+		{
+			firstName = applicant.getFirstName();
+			lastName = applicant.getLastName();
+			jobTitle = applicant.getJobTitle();
+			firstName.resize(15, ' ');
+			lastName.resize(15, ' ');
+			jobTitle.resize(18, ' ');
+			cout << i++ << "\t|" << firstName << "|" << lastName << "|" << jobTitle << endl;
+		}
+		cout << endl;
+		cout << "Enter the Index of the Candidate you want to update: ";
+		cin >> input;
+		details(candidates, input);
+	}
+	else
+	{
+		cout << "List is empty! - Add candidates first, thank you!\n";
+		cin >> pause;
+		system("CLS");
+	}
+}
+
 void listCandidates(vector <Applicant> candidates)
 {
 	int i {1};
@@ -82,9 +133,15 @@ void listCandidates(vector <Applicant> candidates)
 			cout << i++ << "\t|" << firstName << "|" << lastName << "|" << jobTitle << endl;
 		}
 		cout << endl;
-		cout << "Enter Candidate Index for Details: ";
+		cout << "Enter Candidate Index for Details: "; //protect against wrong input (out of bounce)
 		cin >> input;
-		details(candidates, input);
+		if (!isalpha(input) && input > 0 && input <= candidates.size()) //only temporary fix!!!
+			details(candidates, input);
+		else
+		{
+			cout << "Please enter a valid Index!" << endl;
+			cin.clear();
+		}
 	}
 	else
 	{
@@ -104,25 +161,27 @@ Applicant newCandidate(void)
 	cout << endl;
 	cout << "------------------------------New Candidate-----------------------------------------" << endl << endl;
 	cout << "First Name: ";
-	cin >> input;
+	getline (cin, input);
+	newCandidate.setFirstName(input);//not sure why it skipps the first input!!
+	getline (cin, input);
 	newCandidate.setFirstName(input);
 	cout << "Last Name: ";
-	cin >> input;
+	getline (cin, input);
 	newCandidate.setLastName(input);
 	cout << "Job Title: ";
-	cin >> input;
+	getline (cin, input);
 	newCandidate.setJobTitle(input);
 	cout << "Location: ";
-	cin >> input;
+	getline (cin, input);
 	newCandidate.setLocation(input);
 	cout << "Phone Number: ";
-	cin >> input;
+	getline (cin, input);
 	newCandidate.setPhoneNumber(input);
 	cout << "Email: ";
-	cin >> input;
+	getline (cin, input);
 	newCandidate.setEmail(input);
-	cout << "New Candidate: " << newCandidate.getFirstName() << " "<< newCandidate.getLastName() << " successfully created.\n";
-	cin >> input;
+	cout << "\nNew Candidate: " << newCandidate.getFirstName() << " "<< newCandidate.getLastName() << " successfully created.\n";
+	getline (cin, input);
 	system("CLS");
 	return (newCandidate);
 }
@@ -159,6 +218,8 @@ int main()
 			newApplicant = newCandidate();
 			candidates.push_back(newApplicant);
 		}
+		else if (input == 'U' || input == 'u')
+			updateCandidate(candidates);
 		else if (input == 'L' || input == 'l')
 			listCandidates(candidates);
 		else if (input == 'D' || input == 'd')
