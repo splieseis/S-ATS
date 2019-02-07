@@ -99,6 +99,10 @@ Applicant newCandidate(void)
 	system("CLS");
 	string input;
 	Applicant newCandidate;
+	
+	printHeader();
+	cout << endl;
+	cout << "------------------------------New Candidate-----------------------------------------" << endl << endl;
 	cout << "First Name: ";
 	cin >> input;
 	newCandidate.setFirstName(input);
