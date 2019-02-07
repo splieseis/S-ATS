@@ -38,11 +38,28 @@ void imprint()
 	system("CLS");
 }
 
+void details(vector <Applicant> candidates, int i)
+{
+	string pause{};
+	system("CLS");
+	printHeader();
+	cout << endl;
+	cout << "------------------------------Candidate Details-------------------------------------" << endl << endl;
+	cout << "First Name:    " << candidates.at(i - 1).getFirstName() << endl;
+	cout << "Last Name:     " << candidates.at(i - 1).getLastName() << endl;
+	cout << "Job Title:     " << candidates.at(i - 1).getJobTitle() << endl;
+	cout << "Location:      " << candidates.at(i - 1).getLocation() << endl;
+	cout << "Phone Number:  " << candidates.at(i - 1).getPhoneNumber() << endl;
+	cout << "Email Address: " << candidates.at(i - 1).getEmail() << endl;
+	cin >> pause;
+	system("CLS");
+}
 
 void listCandidates(vector <Applicant> candidates)
 {
 	int i {1};
-	char pause {};
+	int input {};
+	string pause {};
 	string firstName {};
 	string lastName {};
 	string jobTitle {};
@@ -61,14 +78,20 @@ void listCandidates(vector <Applicant> candidates)
 			jobTitle = applicant.getJobTitle();
 			firstName.resize(15, ' ');
 			lastName.resize(15, ' ');
-			jobTitle.resize(15, ' ');
+			jobTitle.resize(18, ' ');
 			cout << i++ << "\t|" << firstName << "|" << lastName << "|" << jobTitle << endl;
 		}
+		cout << endl;
+		cout << "Enter Candidate Index for Details: ";
+		cin >> input;
+		details(candidates, input);
 	}
 	else
+	{
 		cout << "List is empty! - Add candidates first, thank you!\n";
-	cin >> pause;
-	system("CLS");
+		cin >> pause;
+		system("CLS");
+	}
 }
 
 Applicant newCandidate(void)
@@ -135,7 +158,10 @@ int main()
 		else if (input == 'L' || input == 'l')
 			listCandidates(candidates);
 		else if (input == 'D' || input == 'd')
+		{
 			candidates.clear();
+			system("CLS");
+		}
 		else if (input == 'Z' || input == 'z')
 			system("CLS");
 		else if (input == 'Q' || input == 'q')
