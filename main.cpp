@@ -1,8 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <string>
-#include <locale>
-#include "Applicant.class.hpp"
+#include "S-ATS.hpp"
 
 using namespace std;
 
@@ -67,7 +63,8 @@ void details(vector <Applicant> candidates, int i)
 	system("CLS");
 }
 
-void updateCandidate(vector <Applicant> candidates)
+
+void printList(vector <Applicant> candidates)
 {
 	int i {1};
 	int input {};
@@ -76,49 +73,6 @@ void updateCandidate(vector <Applicant> candidates)
 	string lastName {};
 	string jobTitle {};
 
-	system("CLS");
-	printHeader();
-	cout << endl;
-	cout << "--------------------------------Update a Candidate----------------------------------" << endl << endl;
-	if (candidates.size() != 0)
-	{
-		cout << "Index\t|First Name     |Last Name      |Job Title" << endl;
-		for(auto applicant: candidates)
-		{
-			firstName = applicant.getFirstName();
-			lastName = applicant.getLastName();
-			jobTitle = applicant.getJobTitle();
-			firstName.resize(15, ' ');
-			lastName.resize(15, ' ');
-			jobTitle.resize(18, ' ');
-			cout << i++ << "\t|" << firstName << "|" << lastName << "|" << jobTitle << endl;
-		}
-		cout << endl;
-		cout << "Enter the Index of the Candidate you want to update: ";
-		cin >> input;
-		details(candidates, input);
-	}
-	else
-	{
-		cout << "List is empty! - Add candidates first, thank you!\n";
-		cin >> pause;
-		system("CLS");
-	}
-}
-
-void listCandidates(vector <Applicant> candidates)
-{
-	int i {1};
-	int input {};
-	string pause {};
-	string firstName {};
-	string lastName {};
-	string jobTitle {};
-
-	system("CLS");
-	printHeader();
-	cout << endl;
-	cout << "-------------------------------------Candidates-------------------------------------" << endl << endl;
 	if (candidates.size() != 0)
 	{
 		cout << "Index\t|First Name     |Last Name      |Job Title" << endl;
@@ -149,6 +103,24 @@ void listCandidates(vector <Applicant> candidates)
 		cin >> pause;
 		system("CLS");
 	}
+}
+
+void updateCandidate(vector <Applicant> candidates)
+{
+	system("CLS");
+	printHeader();
+	cout << endl;
+	cout << "--------------------------------Update a Candidate----------------------------------" << endl << endl;
+	printList(candidates);
+}
+
+void listCandidates(vector <Applicant> candidates)
+{
+	system("CLS");
+	printHeader();
+	cout << endl;
+	cout << "-------------------------------------Candidates-------------------------------------" << endl << endl;
+	printList(candidates);
 }
 
 Applicant newCandidate(void)

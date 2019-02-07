@@ -1,6 +1,9 @@
 #ifndef APPLICANT_CLASS_HPP
 # define APPLICANT_CLASS_HPP
+# include <iostream>
+# include <vector>
 # include <string>
+# include <locale>
 
 class Applicant
 {
@@ -30,4 +33,4 @@ private:
 	std::string _email;
 };
 
-#endif // APPLICANT_HPP
+#endif // APPLICANT_CLASS_HPP
