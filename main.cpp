@@ -43,7 +43,7 @@ void listCandidates(vector <Applicant> candidates)
 	cout << "-------------------------------------Candidates-------------------------------------" << endl << endl;
 	if (candidates.size() != 0)
 	{
-		cout << "    |First Name      Last Name      |Job Title" << endl;
+		cout << "Index\t|First Name     |Last Name      |Job Title" << endl;
 		for(auto applicant: candidates)
 		{
 			firstName = applicant.getFirstName();
@@ -52,8 +52,7 @@ void listCandidates(vector <Applicant> candidates)
 			firstName.resize(15, ' ');
 			lastName.resize(15, ' ');
 			jobTitle.resize(15, ' ');
-			cout << i++ << "   |" << firstName << " " << lastName << "|" << jobTitle << endl;
-			
+			cout << i++ << "\t|" << firstName << "|" << lastName << "|" << jobTitle << endl;
 		}
 	}
 	else
