@@ -2,17 +2,23 @@
 
 using namespace std;
 
+void printLine(char c)
+{
+	for (int i = 0; i < PROGRAM_WIDTH; i++)
+		cout << c;
+	cout << endl;
+}
+
 void printHeader()
 {
+	printLine(' ');
+	cout << center("*****         ***     *********  *****", PROGRAM_WIDTH)<< endl;
+	cout << center("**           ** **    *********  **   ", PROGRAM_WIDTH)<< endl;
+	cout << center("*****  ***  *******      ***     *****", PROGRAM_WIDTH)<< endl;
+	cout << center("   **      ***   ***     ***        **", PROGRAM_WIDTH)<< endl;
+	cout << center("*****     ***     ***    ***     *****", PROGRAM_WIDTH)<< endl;
+	printLine(' ');
 	
-		cout << "------------------------------------------------------------------------------------" << endl;
-		cout << "-                      *****          ***     ********* *****                      -" << endl;
-		cout << "-                      **            ** **    ********* **                         -" << endl;
-		cout << "-                      *****  ***   *******      ***    *****                      -" << endl;
-		cout << "-                         **       ***   ***     ***       **                      -" << endl;
-		cout << "-                      *****      ***     ***    ***    *****                      -" << endl;
-		cout << "------------------------------------------------------------------------------------" << endl;
-		
 /*		cout << "------------------------------------------------------------------------------------" << endl;
 		cout << "-                      *****           *      ********* *****                      -" << endl;
 		cout << "-                      ** **          ***     ********* ** **                      -" << endl;
@@ -23,15 +29,6 @@ void printHeader()
 		cout << "-                      *****     ***       ***   ***    *****                      -" << endl;
 		cout << "------------------------------------------------------------------------------------" << endl;
 */
-
-/*		cout << "------------------------------------------------------------------------------------" << endl;
-		cout << "-----------------------     --------   ----         ----     -----------------------" << endl;
-		cout << "-----------------------   ---------  -  ------   -------   -------------------------" << endl;
-		cout << "-----------------------     -   --       -----   -------     -----------------------" << endl;
-		cout << "-------------------------   -----   ---   ----   ---------   -----------------------" << endl;
-		cout << "-----------------------     ----           ---   -------     -----------------------" << endl;
-		cout << "------------------------------------------------------------------------------------" << endl;
-*/
 }
 
 void imprint()
@@ -40,6 +37,9 @@ void imprint()
 	system("CLS");
 	
 	printHeader();
+	printLine(DEFAULT_LINE_CHAR);
+	cout << center("Imprint", PROGRAM_WIDTH) << endl;
+	printLine(DEFAULT_LINE_CHAR);
 	cout << endl;
 	cout << "Thank you for using Simon's Applicant Tracking System! (c) Simon Plieseis 2019" << endl;
 	getline (cin, pause);
@@ -60,13 +60,19 @@ void updateDetails(vector <Applicant> candidates, int i)
 	getline (cin, input);
 }
 
+string center(string input, int width) { 
+    return (string((width - input.length()) / 2, ' ') + input);
+}
+
 void details(vector <Applicant> candidates, int i)
 {
 	string input{};
 	system("CLS");
 	printHeader();
+	printLine(DEFAULT_LINE_CHAR);
+	cout << center("Candidate Details", PROGRAM_WIDTH) << endl;
+	printLine(DEFAULT_LINE_CHAR);
 	cout << endl;
-	cout << "------------------------------Candidate Details-------------------------------------" << endl << endl;
 	cout << "First Name:    " << candidates.at(i).getFirstName() << endl;
 	cout << "Last Name:     " << candidates.at(i).getLastName() << endl;
 	cout << "Job Title:     " << candidates.at(i).getJobTitle() << endl;
@@ -104,18 +110,31 @@ void printList(vector <Applicant> candidates)
 			cout << i++ << "\t|" << firstName << "|" << lastName << "|" << jobTitle << endl;
 		}
 		cout << endl;
-		cout << "Enter Candidate Index for Details: "; //protect against wrong input (out of bounce)
+		cout << "Enter Candidate Index for Details: ";
 		getline (cin, input);
 		if (isdigit(input[0]))
 		{
 			index = stoi(input);
-			if (index > 0 && index <= candidates.size())
+			if (index > 0 && index <= static_cast<int>(candidates.size()))
 				details(candidates, index - 1);
 			else
-				cout << "Please enter a valid Index!" << endl;
+			{
+				cout << "\nPlease enter a valid Index!" << endl;
+				getline (cin, pause);
+				cout << "TEST " << pause[0];
+				cin >> pause;
+				if (pause[0] != 27)
+					listCandidates(candidates);
+			}
 		}
 		else
-			cout << "Please enter a valid Index!" << endl;
+		{
+			cout << "\nPlease enter a valid Index!" << endl;
+			getline (cin, pause);
+			cout << "TEST " << pause[0];
+			if (pause[0] != 27)
+				listCandidates(candidates);
+		}
 	}
 	else
 	{
@@ -138,8 +157,11 @@ void listCandidates(vector <Applicant> candidates)
 {
 	system("CLS");
 	printHeader();
+	printLine(DEFAULT_LINE_CHAR);
+	cout << center("Candidates", PROGRAM_WIDTH) << endl;
+//	cout << "D - Details\tU - Update\tQ - Quit" << endl;
+	printLine(DEFAULT_LINE_CHAR);
 	cout << endl;
-	cout << "-------------------------------------Candidates-------------------------------------" << endl << endl;
 	printList(candidates);
 }
 
@@ -148,10 +170,12 @@ Applicant newCandidate(void)
 	system("CLS");
 	string input;
 	Applicant newCandidate;
-	
+
 	printHeader();
+	printLine(DEFAULT_LINE_CHAR);
+	cout << center("New Candidate", PROGRAM_WIDTH) << endl;
+	printLine(DEFAULT_LINE_CHAR);
 	cout << endl;
-	cout << "------------------------------New Candidate-----------------------------------------" << endl << endl;
 	cout << "First Name: ";
 	getline (cin, input);
 	newCandidate.setFirstName(input);
@@ -183,23 +207,16 @@ int main()
 	do
 	{
 		printHeader();
-		
-/*		cout << "------------------------------------------------------------------------------------" << endl;
-		cout << "-----------------------*****--------***----*********----*****-----------------------" << endl;
-		cout << "-----------------------***---------**-**------***-------***-------------------------" << endl;
-		cout << "-----------------------*****-***--*******-----***-------*****-----------------------" << endl;
-		cout << "-------------------------***-----***---***----***---------***-----------------------" << endl;
-		cout << "-----------------------*****----***********---***-------*****-----------------------" << endl;
-		cout << "------------------------------------------------------------------------------------" << endl;*/
-
-		cout << " N - New Applicant \tL - List Applicants \tS - Search" << endl;
-		cout << " Z - Clear screen \tD - Delete List \tI - Imprint \t\t Q - Quit " << endl;
-		cout << "------------------------------------------------------------------------------------" << endl;
+		printLine(DEFAULT_LINE_CHAR);
+		cout << center("Main menu", PROGRAM_WIDTH) << endl;
+		printLine(DEFAULT_LINE_CHAR);
+		cout << " N - New Applicant \tL - List Applicants \tS - Search \tZ - Clear screen";
+		cout << "\tD - Delete List \tP - Preferences \tI - Imprint \tQ - Quit " << endl;
+		printLine(DEFAULT_LINE_CHAR);
 		cout << endl;
 		cout << "What do you wanna do?: ";
 		getline (cin, input);
 		cout << endl;
-		
 		if (input == "I" || input == "i")
 			imprint();
 		else if (input == "N" || input == "n")
