@@ -36,30 +36,46 @@ void printHeader()
 
 void imprint()
 {
-	char pause {};
+	string pause {};
 	system("CLS");
 	
 	printHeader();
 	cout << endl;
 	cout << "Thank you for using Simon's Applicant Tracking System! (c) Simon Plieseis 2019" << endl;
-	cin >> pause;
+	getline (cin, pause);
 	system("CLS");
+}
+
+void updateDetails(vector <Applicant> candidates, int i)
+{
+	string input {};
+	
+	cout << "What do you want to update? " << endl;
+	getline (cin, input);
+	getline (cin, input);
+	if (input == "First Name")
+		cout << "First Name updated." << endl;
+	else
+		cout << "Else" << endl;
+	getline (cin, input);
 }
 
 void details(vector <Applicant> candidates, int i)
 {
-	string pause{};
+	string input{};
 	system("CLS");
 	printHeader();
 	cout << endl;
 	cout << "------------------------------Candidate Details-------------------------------------" << endl << endl;
-	cout << "First Name:    " << candidates.at(i - 1).getFirstName() << endl;
-	cout << "Last Name:     " << candidates.at(i - 1).getLastName() << endl;
-	cout << "Job Title:     " << candidates.at(i - 1).getJobTitle() << endl;
-	cout << "Location:      " << candidates.at(i - 1).getLocation() << endl;
-	cout << "Phone Number:  " << candidates.at(i - 1).getPhoneNumber() << endl;
-	cout << "Email Address: " << candidates.at(i - 1).getEmail() << endl;
-	cin >> pause;
+	cout << "First Name:    " << candidates.at(i).getFirstName() << endl;
+	cout << "Last Name:     " << candidates.at(i).getLastName() << endl;
+	cout << "Job Title:     " << candidates.at(i).getJobTitle() << endl;
+	cout << "Location:      " << candidates.at(i).getLocation() << endl;
+	cout << "Phone Number:  " << candidates.at(i).getPhoneNumber() << endl;
+	cout << "Email Address: " << candidates.at(i).getEmail() << endl;
+	getline (cin, input);
+	if (input == "u")
+		updateDetails(candidates, i -1);
 	system("CLS");
 }
 
@@ -67,7 +83,8 @@ void details(vector <Applicant> candidates, int i)
 void printList(vector <Applicant> candidates)
 {
 	int i {1};
-	int input {};
+	int index {};
+	string input {};
 	string pause {};
 	string firstName {};
 	string lastName {};
@@ -88,31 +105,34 @@ void printList(vector <Applicant> candidates)
 		}
 		cout << endl;
 		cout << "Enter Candidate Index for Details: "; //protect against wrong input (out of bounce)
-		cin >> input;
-		if (!isalpha(input) && input > 0 && input <= candidates.size()) //only temporary fix!!!
-			details(candidates, input);
-		else
+		getline (cin, input);
+		if (isdigit(input[0]))
 		{
-			cout << "Please enter a valid Index!" << endl;
-			cin.clear();
+			index = stoi(input);
+			if (index > 0 && index <= candidates.size())
+				details(candidates, index - 1);
+			else
+				cout << "Please enter a valid Index!" << endl;
 		}
+		else
+			cout << "Please enter a valid Index!" << endl;
 	}
 	else
 	{
 		cout << "List is empty! - Add candidates first, thank you!\n";
-		cin >> pause;
+		getline (cin, pause);
 		system("CLS");
 	}
 }
 
-void updateCandidate(vector <Applicant> candidates)
-{
-	system("CLS");
-	printHeader();
-	cout << endl;
-	cout << "--------------------------------Update a Candidate----------------------------------" << endl << endl;
-	printList(candidates);
-}
+//void updateCandidate(vector <Applicant> candidates)
+//{
+//	system("CLS");
+//	printHeader();
+//	cout << endl;
+//	cout << "--------------------------------Update a Candidate----------------------------------" << endl << endl;
+//	printList(candidates);
+//}
 
 void listCandidates(vector <Applicant> candidates)
 {
@@ -133,8 +153,6 @@ Applicant newCandidate(void)
 	cout << endl;
 	cout << "------------------------------New Candidate-----------------------------------------" << endl << endl;
 	cout << "First Name: ";
-	getline (cin, input);
-	newCandidate.setFirstName(input);//not sure why it skipps the first input!!
 	getline (cin, input);
 	newCandidate.setFirstName(input);
 	cout << "Last Name: ";
@@ -160,7 +178,7 @@ Applicant newCandidate(void)
 
 int main()
 {
-	char input;
+	string input;
 	vector <Applicant> candidates {};
 	do
 	{
@@ -174,37 +192,39 @@ int main()
 		cout << "-----------------------*****----***********---***-------*****-----------------------" << endl;
 		cout << "------------------------------------------------------------------------------------" << endl;*/
 
-		cout << " N - New Applicant \tU - Update Applicant \tL - List Applicants \t S - Search" << endl;
+		cout << " N - New Applicant \tL - List Applicants \tS - Search" << endl;
 		cout << " Z - Clear screen \tD - Delete List \tI - Imprint \t\t Q - Quit " << endl;
 		cout << "------------------------------------------------------------------------------------" << endl;
 		cout << endl;
 		cout << "What do you wanna do?: ";
-		cin >> input;
+		getline (cin, input);
 		cout << endl;
 		
-		if (input == 'I' || input == 'i')
+		if (input == "I" || input == "i")
 			imprint();
-		else if (input == 'N' || input == 'n')
+		else if (input == "N" || input == "n")
 		{
 			Applicant newApplicant;
 			newApplicant = newCandidate();
 			candidates.push_back(newApplicant);
 		}
-		else if (input == 'U' || input == 'u')
-			updateCandidate(candidates);
-		else if (input == 'L' || input == 'l')
+		else if (input == "L" || input == "l")
 			listCandidates(candidates);
-		else if (input == 'D' || input == 'd')
+		else if (input == "D" || input == "d")
 		{
 			candidates.clear();
 			system("CLS");
 		}
-		else if (input == 'Z' || input == 'z')
+		else if (input == "Z" || input == "z")
 			system("CLS");
-		else if (input == 'Q' || input == 'q')
+		else if (input == "Q" || input == "q")
 			cout << "Thank you for using S-ATS! See you soon!" << endl;
 		else
+		{
 			cout << "Please enter a valid input  [N, U, L, S, Z, D, I, Q]" << endl;
-	} while (input != 'q' && input != 'Q');
+			getline (cin, input);
+			system("CLS");			
+		}
+	} while (input != "Q" && input != "q");
 	return (0);
 }
