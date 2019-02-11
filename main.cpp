@@ -4,7 +4,8 @@ using namespace std;
 
 void printLine(char c)
 {
-	for (int i = 0; i < PROGRAM_WIDTH; i++)
+	int i;
+	for (i = 0; i < PROGRAM_WIDTH; i++)
 		cout << c;
 	cout << endl;
 }
@@ -52,12 +53,57 @@ void updateDetails(vector <Applicant> candidates, int i)
 	
 	cout << "What do you want to update? " << endl;
 	getline (cin, input);
-	getline (cin, input);
-	if (input == "First Name")
-		cout << "First Name updated." << endl;
+	if (input == "First Name" || input == "first name" || input == "First name")
+	{
+		cout << "\nCurrent First Name: " << candidates.at(i).getFirstName() << "-> New First Name: ";
+		getline(cin, input);
+		candidates.at(i).setFirstName(input);
+		cout << "\nContact succefully updated." << endl;
+	}
+	else if (input == "Last Name" || input == "last name" || input == "Last name")
+	{
+		cout << "\nCurrent Last Name: " << candidates.at(i).getLastName() << "-> New Last Name: ";
+		getline(cin, input);
+		candidates.at(i).setLastName(input);
+		cout << "\nContact succefully updated." << endl;
+	}
+	else if (input == "Job Title" || input == "job title" || input == "Job title")
+	{
+		cout << "\nCurrent Job Title: " << candidates.at(i).getJobTitle() << "-> New Job Title: ";
+		getline(cin, input);
+		candidates.at(i).setJobTitle(input);
+		cout << "\nContact succefully updated." << endl;
+	}
+	else if (input == "Location" || input == "location")
+	{
+		cout << "\nCurrent Location: " << candidates.at(i).getLocation() << "-> New Location: ";
+		getline(cin, input);
+		candidates.at(i).setLocation(input);
+		cout << "\nContact succefully updated." << endl;
+	}
+	else if (input == "Phone Number" || input == "phone number" || input == "Phone number" || input == "phone")
+	{
+		cout << "\nCurrent Phone Number: " << candidates.at(i).getPhoneNumber() << "-> New Phone Number: ";
+		getline(cin, input);
+		candidates.at(i).setPhoneNumber(input);
+		cout << "\nContact succefully updated." << endl;
+	}
+	else if (input == "Email" || input == "email" || input == "Email address" || input == "email address")
+	{
+		cout << "\nCurrent Email Address: " << candidates.at(i).getEmail() << "-> New Email Address: ";
+		getline(cin, input);
+		candidates.at(i).setEmail(input);
+		cout << "\nContact succefully updated." << endl;
+	}
 	else
-		cout << "Else" << endl;
+	{
+		cout << "Please enter a valid field: [ First Name, Last Name, Job Title, Location, Phone number, Email ]" << endl;
+		getline(cin, input);
+		system("CLS");
+		updateDetails(candidates, i);
+	}
 	getline (cin, input);
+	system("CLS");
 }
 
 string center(string input, int width) { 
@@ -79,12 +125,21 @@ void details(vector <Applicant> candidates, int i)
 	cout << "Location:      " << candidates.at(i).getLocation() << endl;
 	cout << "Phone Number:  " << candidates.at(i).getPhoneNumber() << endl;
 	cout << "Email Address: " << candidates.at(i).getEmail() << endl;
+	cout << endl;
+	cout << "U - Update \tQ - Quit" << endl;
 	getline (cin, input);
-	if (input == "u")
-		updateDetails(candidates, i -1);
-	system("CLS");
+	if (input == "u" || input == "U")
+		updateDetails(candidates, i);
+	else if (input == "q" || input == "Q")
+		system("CLS");
+	else
+	{
+		cout << "Please enter valid input: [ U, Q ]";
+		getline (cin, input);
+		system("CLS");
+		details(candidates, i);
+	}
 }
-
 
 void printList(vector <Applicant> candidates)
 {
@@ -127,6 +182,8 @@ void printList(vector <Applicant> candidates)
 					listCandidates(candidates);
 			}
 		}
+		else if (input[0] == 'q' || input[0] == 'Q')
+			system("CLS");
 		else
 		{
 			cout << "\nPlease enter a valid Index!" << endl;
@@ -200,6 +257,13 @@ Applicant newCandidate(void)
 	return (newCandidate);
 }
 
+//void preferences(void)
+//{
+//	cout << "pref";
+//	PROGRAM_WIDTH = 120;
+//	return ;
+//}
+
 int main()
 {
 	string input;
@@ -210,16 +274,15 @@ int main()
 		printLine(DEFAULT_LINE_CHAR);
 		cout << center("Main menu", PROGRAM_WIDTH) << endl;
 		printLine(DEFAULT_LINE_CHAR);
-		cout << " N - New Applicant \tL - List Applicants \tS - Search \tZ - Clear screen";
+		cout << " N - New Applicant \tL - List Applicants \tS - Search \tZ - Clear screen"; // not ideal for resizing, vector with menu links
 		cout << "\tD - Delete List \tP - Preferences \tI - Imprint \tQ - Quit " << endl;
 		printLine(DEFAULT_LINE_CHAR);
 		cout << endl;
 		cout << "What do you wanna do?: ";
 		getline (cin, input);
 		cout << endl;
-		if (input == "I" || input == "i")
-			imprint();
-		else if (input == "N" || input == "n")
+
+		if (input == "N" || input == "n")
 		{
 			Applicant newApplicant;
 			newApplicant = newCandidate();
@@ -234,6 +297,10 @@ int main()
 		}
 		else if (input == "Z" || input == "z")
 			system("CLS");
+		else if (input == "P" || input == "p")
+			;
+		else if (input == "I" || input == "i")
+			imprint();
 		else if (input == "Q" || input == "q")
 			cout << "Thank you for using S-ATS! See you soon!" << endl;
 		else
