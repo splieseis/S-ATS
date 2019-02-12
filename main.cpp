@@ -269,6 +269,12 @@ void search(vector <Applicant> candidates)
 	string search {};
 	vector <int> results;
 	int i {0};
+	string firstName {};
+	string lastName {};
+	string jobTitle {};
+	string location {};
+	string phone {};
+	string email {};
 	
 	system("CLS");
 	printHeader();
@@ -297,11 +303,23 @@ void search(vector <Applicant> candidates)
 	if (!results.empty())
 	{
 		cout << endl << results.size() << " result(s) found: " << endl << endl;
+		cout << "Index\t|First Name     |Last Name      |Job Title         |Location          |Phone Number   |Email Address       " << endl;
 		for (int index: results)
 		{
-			cout << index << ": " << candidates.at(index).getFirstName() << " "  << candidates.at(index).getLastName() << " "
-								<< candidates.at(index).getJobTitle() << " "  << candidates.at(index).getLocation() << " " 
-								<< candidates.at(index).getPhoneNumber() << " "  << candidates.at(index).getEmail() << " " << endl;
+			firstName = candidates.at(index).getFirstName();
+			lastName = candidates.at(index).getLastName();
+			jobTitle = candidates.at(index).getJobTitle();
+			location = candidates.at(index).getLocation();
+			phone = candidates.at(index).getPhoneNumber();
+			email = candidates.at(index).getEmail();
+			firstName.resize(15, ' ');
+			lastName.resize(15, ' ');
+			jobTitle.resize(18, ' ');
+			location.resize(18, ' ');
+			phone.resize(15, ' ');
+			email.resize(25, ' ');
+			cout << index << "\t|" << firstName << "|" << lastName << "|" << jobTitle << "|" 
+				<< location << "|" << phone << "|" << email << endl;
 		}
 	}
 	else
