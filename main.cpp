@@ -264,6 +264,52 @@ Applicant newCandidate(void)
 //	return ;
 //}
 
+void search(vector <Applicant> candidates)
+{
+	string search {};
+	vector <int> results;
+	int i {0};
+	
+	system("CLS");
+	printHeader();
+	printLine(DEFAULT_LINE_CHAR);
+	cout << center("Search", PROGRAM_WIDTH) << endl;
+	printLine(DEFAULT_LINE_CHAR);
+	cout << endl;
+	cout << "What are you looking for? ";
+	getline(cin, search);
+	for (auto applicant: candidates) // need to add to_lower conversion + nice layout
+	{
+		if (applicant.getFirstName().find(search) != string::npos)
+			results.push_back(i);
+		else if (applicant.getLastName().find(search) != string::npos)
+			results.push_back(i);
+		else if (applicant.getJobTitle().find(search) != string::npos)
+			results.push_back(i);
+		else if (applicant.getLocation().find(search) != string::npos)
+			results.push_back(i);
+		else if (applicant.getPhoneNumber().find(search) != string::npos)
+			results.push_back(i);
+		else if (applicant.getEmail().find(search) != string::npos)
+			results.push_back(i);
+		i++;
+	}
+	if (!results.empty())
+	{
+		cout << endl << results.size() << " result(s) found: " << endl << endl;
+		for (int index: results)
+		{
+			cout << index << ": " << candidates.at(index).getFirstName() << " "  << candidates.at(index).getLastName() << " "
+								<< candidates.at(index).getJobTitle() << " "  << candidates.at(index).getLocation() << " " 
+								<< candidates.at(index).getPhoneNumber() << " "  << candidates.at(index).getEmail() << " " << endl;
+		}
+	}
+	else
+		cout << "No results found!" << endl;
+	getline(cin, search);
+	system ("CLS");
+}
+
 int main()
 {
 	string input;
@@ -290,6 +336,8 @@ int main()
 		}
 		else if (input == "L" || input == "l")
 			listCandidates(candidates);
+		else if (input == "S" || input == "s")
+			search(candidates);
 		else if (input == "D" || input == "d")
 		{
 			candidates.clear();
@@ -305,7 +353,7 @@ int main()
 			cout << "Thank you for using S-ATS! See you soon!" << endl;
 		else
 		{
-			cout << "Please enter a valid input  [N, U, L, S, Z, D, I, Q]" << endl;
+			cout << "Please enter a valid input  [N, L, S, Z, D, I, Q]" << endl;
 			getline (cin, input);
 			system("CLS");			
 		}
