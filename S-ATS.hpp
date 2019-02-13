@@ -15,5 +15,6 @@ void printList(std::vector <Applicant> candidates);
 Applicant newCandidate(void);
 std::string center(std::string input, int width);
 void printLine(char c);
+void clearScreen(void);
 
 #endif

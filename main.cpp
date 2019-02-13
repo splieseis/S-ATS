@@ -35,7 +35,7 @@ void printHeader()
 void imprint()
 {
 	string pause {};
-	system("CLS");
+	clearScreen();
 	
 	printHeader();
 	printLine(DEFAULT_LINE_CHAR);
@@ -44,7 +44,7 @@ void imprint()
 	cout << endl;
 	cout << "Thank you for using Simon's Applicant Tracking System! (c) Simon Plieseis 2019" << endl;
 	getline (cin, pause);
-	system("CLS");
+	clearScreen();
 }
 
 void updateDetails(vector <Applicant> candidates, int i)
@@ -99,11 +99,11 @@ void updateDetails(vector <Applicant> candidates, int i)
 	{
 		cout << "Please enter a valid field: [ First Name, Last Name, Job Title, Location, Phone number, Email ]" << endl;
 		getline(cin, input);
-		system("CLS");
+		clearScreen();
 		updateDetails(candidates, i);
 	}
 	getline (cin, input);
-	system("CLS");
+	clearScreen();
 }
 
 string center(string input, int width) { 
@@ -113,7 +113,7 @@ string center(string input, int width) {
 void details(vector <Applicant> candidates, int i)
 {
 	string input{};
-	system("CLS");
+	clearScreen();
 	printHeader();
 	printLine(DEFAULT_LINE_CHAR);
 	cout << center("Candidate Details", PROGRAM_WIDTH) << endl;
@@ -131,12 +131,12 @@ void details(vector <Applicant> candidates, int i)
 	if (input == "u" || input == "U")
 		updateDetails(candidates, i);
 	else if (input == "q" || input == "Q")
-		system("CLS");
+		clearScreen();
 	else
 	{
 		cout << "Please enter valid input: [ U, Q ]";
 		getline (cin, input);
-		system("CLS");
+		clearScreen();
 		details(candidates, i);
 	}
 }
@@ -183,7 +183,7 @@ void printList(vector <Applicant> candidates)
 			}
 		}
 		else if (input[0] == 'q' || input[0] == 'Q')
-			system("CLS");
+			clearScreen();
 		else
 		{
 			cout << "\nPlease enter a valid Index!" << endl;
@@ -197,22 +197,13 @@ void printList(vector <Applicant> candidates)
 	{
 		cout << "List is empty! - Add candidates first, thank you!\n";
 		getline (cin, pause);
-		system("CLS");
+		clearScreen();
 	}
 }
 
-//void updateCandidate(vector <Applicant> candidates)
-//{
-//	system("CLS");
-//	printHeader();
-//	cout << endl;
-//	cout << "--------------------------------Update a Candidate----------------------------------" << endl << endl;
-//	printList(candidates);
-//}
-
 void listCandidates(vector <Applicant> candidates)
 {
-	system("CLS");
+	clearScreen();
 	printHeader();
 	printLine(DEFAULT_LINE_CHAR);
 	cout << center("Candidates", PROGRAM_WIDTH) << endl;
@@ -224,7 +215,7 @@ void listCandidates(vector <Applicant> candidates)
 
 Applicant newCandidate(void)
 {
-	system("CLS");
+	clearScreen();
 	string input;
 	Applicant newCandidate;
 
@@ -253,7 +244,7 @@ Applicant newCandidate(void)
 	newCandidate.setEmail(input);
 	cout << "\nNew Candidate: " << newCandidate.getFirstName() << " "<< newCandidate.getLastName() << " successfully created.\n";
 	getline (cin, input);
-	system("CLS");
+	clearScreen();
 	return (newCandidate);
 }
 
@@ -276,7 +267,7 @@ void search(vector <Applicant> candidates)
 	string phone {};
 	string email {};
 	
-	system("CLS");
+	clearScreen();
 	printHeader();
 	printLine(DEFAULT_LINE_CHAR);
 	cout << center("Search", PROGRAM_WIDTH) << endl;
@@ -325,7 +316,12 @@ void search(vector <Applicant> candidates)
 	else
 		cout << "No results found!" << endl;
 	getline(cin, search);
-	system ("CLS");
+	clearScreen();
+}
+
+void clearScreen(void)
+{
+	system("CLS"); // maybe I could dedect which OS is and use if/else
 }
 
 int main()
@@ -359,10 +355,10 @@ int main()
 		else if (input == "D" || input == "d")
 		{
 			candidates.clear();
-			system("CLS");
+			clearScreen();
 		}
 		else if (input == "Z" || input == "z")
-			system("CLS");
+			clearScreen();
 		else if (input == "P" || input == "p")
 			;
 		else if (input == "I" || input == "i")
@@ -373,7 +369,7 @@ int main()
 		{
 			cout << "Please enter a valid input  [N, L, S, Z, D, I, Q]" << endl;
 			getline (cin, input);
-			system("CLS");			
+			clearScreen();			
 		}
 	} while (input != "Q" && input != "q");
 	return (0);
