@@ -47,53 +47,66 @@ void imprint()
 	clearScreen();
 }
 
-void updateDetails(vector <Applicant> candidates, int i)
+void updateDetails(vector <Applicant> &candidates, int i)
 {
 	string input {};
 	
-	cout << "What do you want to update? " << endl;
+	clearScreen();
+	printHeader();
+	printLine(DEFAULT_LINE_CHAR);
+	cout << center("Update Candidate Details", PROGRAM_WIDTH) << endl;
+	printLine(DEFAULT_LINE_CHAR);
+	cout << endl;
+	printDetails(candidates, i);
+	cout << endl;
+	cout << "What do you want to update? ";
 	getline (cin, input);
 	if (input == "First Name" || input == "first name" || input == "First name")
 	{
 		cout << "\nCurrent First Name: " << candidates.at(i).getFirstName() << "-> New First Name: ";
 		getline(cin, input);
 		candidates.at(i).setFirstName(input);
-		cout << "\nContact succefully updated." << endl;
+		cout << "\nFirst Name succefully updated to " << candidates.at(i).getFirstName() << ". " << endl;
 	}
 	else if (input == "Last Name" || input == "last name" || input == "Last name")
 	{
 		cout << "\nCurrent Last Name: " << candidates.at(i).getLastName() << "-> New Last Name: ";
 		getline(cin, input);
 		candidates.at(i).setLastName(input);
-		cout << "\nContact succefully updated." << endl;
+		cout << "\nLast Name succefully updated to " << candidates.at(i).getLastName() << ". " << endl;
 	}
 	else if (input == "Job Title" || input == "job title" || input == "Job title")
 	{
 		cout << "\nCurrent Job Title: " << candidates.at(i).getJobTitle() << "-> New Job Title: ";
 		getline(cin, input);
 		candidates.at(i).setJobTitle(input);
-		cout << "\nContact succefully updated." << endl;
+		cout << "\nJob Title succefully updated to " << candidates.at(i).getJobTitle() << ". " << endl;
 	}
 	else if (input == "Location" || input == "location")
 	{
 		cout << "\nCurrent Location: " << candidates.at(i).getLocation() << "-> New Location: ";
 		getline(cin, input);
 		candidates.at(i).setLocation(input);
-		cout << "\nContact succefully updated." << endl;
+		cout << "\nLocation succefully updated to " << candidates.at(i).getLocation() << ". " << endl;
 	}
 	else if (input == "Phone Number" || input == "phone number" || input == "Phone number" || input == "phone")
 	{
 		cout << "\nCurrent Phone Number: " << candidates.at(i).getPhoneNumber() << "-> New Phone Number: ";
 		getline(cin, input);
 		candidates.at(i).setPhoneNumber(input);
-		cout << "\nContact succefully updated." << endl;
+		cout << "\nPhone Number succefully updated to " << candidates.at(i).getPhoneNumber() << ". " << endl;
 	}
 	else if (input == "Email" || input == "email" || input == "Email address" || input == "email address")
 	{
 		cout << "\nCurrent Email Address: " << candidates.at(i).getEmail() << "-> New Email Address: ";
 		getline(cin, input);
 		candidates.at(i).setEmail(input);
-		cout << "\nContact succefully updated." << endl;
+		cout << "\nEmail succefully updated to " << candidates.at(i).getEmail() << ". " << endl;
+	}
+	else if (input == "Q" || input == "q")
+	{
+		clearScreen();
+		return;
 	}
 	else
 	{
@@ -102,7 +115,10 @@ void updateDetails(vector <Applicant> candidates, int i)
 		clearScreen();
 		updateDetails(candidates, i);
 	}
+	cout << "\nDo you want to update anything else? Y/N ";
 	getline (cin, input);
+	if (input == "Y" || input == "y" || input == "Yes" || input == "yes")
+		updateDetails(candidates, i);
 	clearScreen();
 }
 
@@ -110,7 +126,17 @@ string center(string input, int width) {
     return (string((width - input.length()) / 2, ' ') + input);
 }
 
-void details(vector <Applicant> candidates, int i)
+void printDetails(vector <Applicant> &candidates, int i)
+{
+	cout << "First Name:    " << candidates.at(i).getFirstName() << endl;
+	cout << "Last Name:     " << candidates.at(i).getLastName() << endl;
+	cout << "Job Title:     " << candidates.at(i).getJobTitle() << endl;
+	cout << "Location:      " << candidates.at(i).getLocation() << endl;
+	cout << "Phone Number:  " << candidates.at(i).getPhoneNumber() << endl;
+	cout << "Email Address: " << candidates.at(i).getEmail() << endl;
+}
+
+void details(vector <Applicant> &candidates, int i)
 {
 	string input{};
 	clearScreen();
@@ -119,12 +145,7 @@ void details(vector <Applicant> candidates, int i)
 	cout << center("Candidate Details", PROGRAM_WIDTH) << endl;
 	printLine(DEFAULT_LINE_CHAR);
 	cout << endl;
-	cout << "First Name:    " << candidates.at(i).getFirstName() << endl;
-	cout << "Last Name:     " << candidates.at(i).getLastName() << endl;
-	cout << "Job Title:     " << candidates.at(i).getJobTitle() << endl;
-	cout << "Location:      " << candidates.at(i).getLocation() << endl;
-	cout << "Phone Number:  " << candidates.at(i).getPhoneNumber() << endl;
-	cout << "Email Address: " << candidates.at(i).getEmail() << endl;
+	printDetails(candidates, i);
 	cout << endl;
 	cout << "U - Update \tQ - Quit" << endl;
 	getline (cin, input);
@@ -141,7 +162,7 @@ void details(vector <Applicant> candidates, int i)
 	}
 }
 
-void printList(vector <Applicant> candidates)
+void printList(vector <Applicant> &candidates)
 {
 	int i {1};
 	int index {};
@@ -201,7 +222,7 @@ void printList(vector <Applicant> candidates)
 	}
 }
 
-void listCandidates(vector <Applicant> candidates)
+void listCandidates(vector <Applicant> &candidates)
 {
 	clearScreen();
 	printHeader();
