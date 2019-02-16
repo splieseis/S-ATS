@@ -4,6 +4,9 @@
 # include <vector>
 # include <string>
 # include <locale>
+# include <fstream>
+# include <cstdlib>
+# include <time.h>
 
 class Applicant
 {

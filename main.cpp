@@ -2,6 +2,51 @@
 
 using namespace std;
 
+string encryption(string str, string ascii, string key)
+{
+	size_t i {0};
+	int index {0};
+	for (char c: str)
+	{
+		i = ascii.find(c);
+		str.at(index) = key.at(i);
+		index++;
+	}
+	return (str);
+}
+
+string decryption(string str, string ascii, string key)
+{
+	size_t i {0};
+	int index {0};
+	for (char c: str)
+	{
+		i = key.find(c);
+		str.at(index) = ascii.at(i);
+		index++;
+	}
+	return (str);
+}
+
+string keyGenerator(string str)
+{
+	string input {};
+	int num1 {0};
+	int num2 {0};
+	int i {0};
+	int max {0};
+	
+	max = str.size();
+	while (i < 1000)
+	{
+		num1 = rand() % max;
+		num2 = rand() % max;
+		swap(str[num1], str[num2]);
+		i++;
+	}
+	return (str);
+}
+
 void printLine(char c)
 {
 	int i;
@@ -269,13 +314,6 @@ Applicant newCandidate(void)
 	return (newCandidate);
 }
 
-//void preferences(void)
-//{
-//	cout << "pref";
-//	PROGRAM_WIDTH = 120;
-//	return ;
-//}
-
 void search(vector <Applicant> candidates)
 {
 	string search {};
@@ -345,6 +383,38 @@ void clearScreen(void)
 	system("CLS"); // maybe I could dedect which OS is and use if/else
 }
 
+void saveCandidates(const vector <Applicant> &candidates)
+{
+//	string key {};
+//	string ascii {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!0123456789\"?^$%&/() #=*+-~@`_.:{}[]\\|\'"};
+//	srand (time(NULL));
+//	key = keyGenerator(ascii);
+	ofstream myfile;
+	myfile.open ("candidates.csv");
+	myfile << "First Name;Last Name;Job Title;Location;Phone Number;Email\n";
+//	for (auto applicant: candidates)
+//	{
+//		myfile << 
+//		  encryption(applicant.getFirstName(), ascii, key) + DEFAULT_CVS_CHAR 
+//		+ encryption(applicant.getLastName(), ascii, key) + DEFAULT_CVS_CHAR 
+//		+ encryption(applicant.getJobTitle(), ascii, key) + DEFAULT_CVS_CHAR 
+//		+ encryption(applicant.getLocation(), ascii, key) + DEFAULT_CVS_CHAR 
+//		+ encryption(applicant.getPhoneNumber(), ascii, key) + DEFAULT_CVS_CHAR 
+//		+ encryption(applicant.getEmail(), ascii, key) + "\n";
+//	}
+	for (auto applicant: candidates)
+	{
+		myfile << 
+		  applicant.getFirstName() + DEFAULT_CVS_CHAR 
+		+ applicant.getLastName() + DEFAULT_CVS_CHAR 
+		+ applicant.getJobTitle() + DEFAULT_CVS_CHAR 
+		+ applicant.getLocation() + DEFAULT_CVS_CHAR 
+		+ applicant.getPhoneNumber() + DEFAULT_CVS_CHAR 
+		+ applicant.getEmail() + "\n";
+	}
+	myfile.close();
+}
+
 int main()
 {
 	string input;
@@ -393,5 +463,8 @@ int main()
 			clearScreen();			
 		}
 	} while (input != "Q" && input != "q");
+	cout << endl << "Saving Candidates...";
+	saveCandidates(candidates);
+	getline(cin, input);
 	return (0);
 }
