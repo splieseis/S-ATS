@@ -2,6 +2,7 @@
 # define S_ATS_HPP
 # include "Applicant.class.hpp"
 
+using namespace std;
 const int PROGRAM_WIDTH = 171;
 const char DEFAULT_LINE_CHAR = '~';
 const char DEFAULT_CSV_CHAR = ';';
@@ -9,7 +10,8 @@ const std::string DEFAULT_FILENAME = "candidates";
 
 /* Function Prototypes */
 
-void printHeader();
+void printHeader(std::string menuTitle);
+void exeMainMenu(std::vector <Applicant> &candidates);
 void imprint();
 void details(std::vector <Applicant> &candidates, int i);
 void listCandidates(std::vector <Applicant> &candidates);
@@ -25,6 +27,7 @@ void saveCandidates(const std::vector <Applicant> &candidates);
 std::string keyGenerator(void);
 std::string encryption(std::string str, std::string key);
 std::string decryption(std::string str, std::string key);
+void search(std::vector <Applicant> candidates);
 
 
 
