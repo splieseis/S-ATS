@@ -406,11 +406,18 @@ vector <size_t> getDeliminatorPos(const string line)
 
 void readCandidates(vector <Applicant> &candidates)
 {
-	vector <size_t> deliminatorPos {};
+	string path {"data\\"};
+	string name {};
+	string fileExtension {".csv"};
 	string line {};
 	string key {};
 	ifstream myfile;
-	myfile.open("candidates.csv");
+	vector <size_t> deliminatorPos {};
+
+	cout << "Filename: ";
+	getline(cin, name);
+	name.empty() ? name = DEFAULT_FILENAME : name = name;
+	myfile.open (path + name + fileExtension);
 	if (myfile.is_open())
 	{
 		getline(myfile, key);
@@ -435,12 +442,19 @@ void readCandidates(vector <Applicant> &candidates)
 
 void saveCandidates(const vector <Applicant> &candidates)
 {
-	cout << endl << "Saving Candidates...";
+	string path {"data\\"};
+	string name {};
+	string fileExtension {".csv"};
 	string key = keyGenerator();
 	ofstream myfile;
-	myfile.open ("candidates.csv");
+	
+	cout << "Filename: ";
+	getline(cin, name);
+	name.empty() ? name = DEFAULT_FILENAME : name = name;
+	myfile.open (path + name + fileExtension);
 	if (myfile.is_open())
-	{
+	{	
+		cout << endl << "Saving Candidates...";
 		myfile << key + "\n";
 		myfile << encryption("First Name", key) + DEFAULT_CSV_CHAR + encryption("Last Name", key) + DEFAULT_CSV_CHAR + encryption("Job Title", key) + DEFAULT_CSV_CHAR
 				+ encryption("Location", key) + DEFAULT_CSV_CHAR + encryption("Phone Number", key) + DEFAULT_CSV_CHAR + encryption("Email Address", key) + "\n";

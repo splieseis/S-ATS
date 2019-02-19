@@ -5,6 +5,7 @@
 const int PROGRAM_WIDTH = 171;
 const char DEFAULT_LINE_CHAR = '~';
 const char DEFAULT_CSV_CHAR = ';';
+const std::string DEFAULT_FILENAME = "candidates";
 
 /* Function Prototypes */
 
