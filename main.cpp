@@ -395,7 +395,7 @@ vector <size_t> getDeliminatorPos(const string line)
 	deliminatorPos.push_back(0);
 	while (pos < len)
 	{
-		if (line.at(pos) == ';')
+		if (line.at(pos) == DEFAULT_CSV_CHAR)
 			deliminatorPos.push_back(pos);
 		pos++;
 	}
@@ -440,16 +440,16 @@ void saveCandidates(const vector <Applicant> &candidates)
 	if (myfile.is_open())
 	{
 		myfile << key + "\n";
-		myfile << encryption("First Name", key) + DEFAULT_CVS_CHAR + encryption("Last Name", key) + DEFAULT_CVS_CHAR + encryption("Job Title", key) + DEFAULT_CVS_CHAR
-				+ encryption("Location", key) + DEFAULT_CVS_CHAR + encryption("Phone Number", key) + DEFAULT_CVS_CHAR + encryption("Email Address", key) + "\n";
+		myfile << encryption("First Name", key) + DEFAULT_CSV_CHAR + encryption("Last Name", key) + DEFAULT_CSV_CHAR + encryption("Job Title", key) + DEFAULT_CSV_CHAR
+				+ encryption("Location", key) + DEFAULT_CSV_CHAR + encryption("Phone Number", key) + DEFAULT_CSV_CHAR + encryption("Email Address", key) + "\n";
 		for (auto applicant: candidates)
 		{
 			myfile << 
-			  encryption(applicant.getFirstName(), key) + DEFAULT_CVS_CHAR 
-			+ encryption(applicant.getLastName(), key) + DEFAULT_CVS_CHAR 
-			+ encryption(applicant.getJobTitle(), key) + DEFAULT_CVS_CHAR 
-			+ encryption(applicant.getLocation(), key) + DEFAULT_CVS_CHAR 
-			+ encryption(applicant.getPhoneNumber(), key) + DEFAULT_CVS_CHAR 
+			  encryption(applicant.getFirstName(), key) + DEFAULT_CSV_CHAR 
+			+ encryption(applicant.getLastName(), key) + DEFAULT_CSV_CHAR 
+			+ encryption(applicant.getJobTitle(), key) + DEFAULT_CSV_CHAR 
+			+ encryption(applicant.getLocation(), key) + DEFAULT_CSV_CHAR 
+			+ encryption(applicant.getPhoneNumber(), key) + DEFAULT_CSV_CHAR 
 			+ encryption(applicant.getEmail(), key) + "\n";
 		}
 		myfile.close();

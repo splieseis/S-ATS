@@ -4,7 +4,7 @@
 
 const int PROGRAM_WIDTH = 171;
 const char DEFAULT_LINE_CHAR = '~';
-const char DEFAULT_CVS_CHAR = ';';
+const char DEFAULT_CSV_CHAR = ';';
 
 /* Function Prototypes */
 
