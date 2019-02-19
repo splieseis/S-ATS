@@ -1,12 +1,5 @@
 #ifndef APPLICANT_CLASS_HPP
 # define APPLICANT_CLASS_HPP
-# include <iostream>
-# include <vector>
-# include <string>
-# include <locale>
-# include <fstream>
-# include <cstdlib>
-# include <time.h>
 
 class Applicant
 {

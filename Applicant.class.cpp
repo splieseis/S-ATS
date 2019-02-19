@@ -1,4 +1,4 @@
-#include "Applicant.class.hpp"
+#include "S-ATS.hpp"
 
 Applicant::Applicant()
 {
