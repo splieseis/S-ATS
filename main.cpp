@@ -6,11 +6,12 @@ string encryption(string str, string key)
 {
 	string ascii {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!0123456789,\"?^$%&/() #=*+-~@`_.:{}[]\\|\'"};
 	size_t i {0};
-	int index {0};
+	size_t index {0};
 	for (char c: str)
 	{
 		i = ascii.find(c);
-		str.at(index) = key.at(i);
+		if (i != string::npos)
+			str.at(index) = key.at(i);
 		index++;
 	}
 	return (str);
@@ -20,12 +21,13 @@ string decryption(string str, string key)
 {
 	string ascii {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!0123456789,\"?^$%&/() #=*+-~@`_.:{}[]\\|\'"};
 	size_t i {0};
-	int index {0};
+	size_t index {0};
 	
 	for (char c: str)
 	{
 		i = key.find(c);
-		str.at(index) = ascii.at(i);
+		if (i != string::npos)
+			str.at(index) = ascii.at(i);
 		index++;
 	}
 	return (str);
