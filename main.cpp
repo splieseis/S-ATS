@@ -2,8 +2,9 @@
 
 using namespace std;
 
-string encryption(string str, string ascii, string key)
+string encryption(string str, string key)
 {
+	string ascii {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!0123456789,\"?^$%&/() #=*+-~@`_.:{}[]\\|\'"};
 	size_t i {0};
 	int index {0};
 	for (char c: str)
@@ -15,10 +16,12 @@ string encryption(string str, string ascii, string key)
 	return (str);
 }
 
-string decryption(string str, string ascii, string key)
+string decryption(string str, string key)
 {
+	string ascii {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!0123456789,\"?^$%&/() #=*+-~@`_.:{}[]\\|\'"};
 	size_t i {0};
 	int index {0};
+	
 	for (char c: str)
 	{
 		i = key.find(c);
@@ -28,23 +31,24 @@ string decryption(string str, string ascii, string key)
 	return (str);
 }
 
-string keyGenerator(string str)
+string keyGenerator(void)
 {
-	string input {};
+	string ascii {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!0123456789,\"?^$%&/() #=*+-~@`_.:{}[]\\|\'"};
 	int num1 {0};
 	int num2 {0};
 	int i {0};
 	int max {0};
 	
-	max = str.size();
+	srand (time(NULL));
+	max = ascii.size();
 	while (i < 1000)
 	{
 		num1 = rand() % max;
 		num2 = rand() % max;
-		swap(str[num1], str[num2]);
+		swap(ascii[num1], ascii[num2]);
 		i++;
 	}
-	return (str);
+	return (ascii);
 }
 
 void printLine(char c)
@@ -383,42 +387,88 @@ void clearScreen(void)
 	system("CLS"); // maybe I could dedect which OS is and use if/else
 }
 
+vector <size_t> getDeliminatorPos(const string line)
+{
+	vector <size_t> deliminatorPos {};
+	size_t pos {0};
+	size_t len = line.size();
+	deliminatorPos.push_back(0);
+	while (pos < len)
+	{
+		if (line.at(pos) == ';')
+			deliminatorPos.push_back(pos);
+		pos++;
+	}
+	return (deliminatorPos);
+}
+
+void readCandidates(vector <Applicant> &candidates)
+{
+	vector <size_t> deliminatorPos {};
+	string line {};
+	string key {};
+	ifstream myfile;
+	myfile.open("candidates.csv");
+	if (myfile.is_open())
+	{
+		getline(myfile, key);
+		getline(myfile, line); // to skip the header line
+		while(getline(myfile, line))
+		{
+			Applicant newCandidate;
+ 			deliminatorPos = getDeliminatorPos(line);
+			newCandidate.setFirstName(decryption(line.substr(deliminatorPos.at(0), (deliminatorPos.at(1) - deliminatorPos.at(0))), key));
+			newCandidate.setLastName(decryption(line.substr(deliminatorPos.at(1) + 1, (deliminatorPos.at(2) - 1 - deliminatorPos.at(1))), key));
+			newCandidate.setJobTitle(decryption(line.substr(deliminatorPos.at(2) + 1, (deliminatorPos.at(3) - 1 - deliminatorPos.at(2))), key));
+			newCandidate.setLocation(decryption(line.substr(deliminatorPos.at(3) + 1, (deliminatorPos.at(4) - 1 - deliminatorPos.at(3))), key));
+			newCandidate.setPhoneNumber(decryption(line.substr(deliminatorPos.at(4) + 1, (deliminatorPos.at(5) - 1 - deliminatorPos.at(4))), key));
+			newCandidate.setEmail(decryption(line.substr(deliminatorPos.at(5) + 1, (line.size() - deliminatorPos.at(5))), key));
+			candidates.push_back(newCandidate);
+		}
+		myfile.close();
+	}
+	else 
+		cout << "Unable to open the file!\n";
+}
+
 void saveCandidates(const vector <Applicant> &candidates)
 {
-//	string key {};
-//	string ascii {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!0123456789\"?^$%&/() #=*+-~@`_.:{}[]\\|\'"};
-//	srand (time(NULL));
-//	key = keyGenerator(ascii);
+	cout << endl << "Saving Candidates...";
+	string key = keyGenerator();
 	ofstream myfile;
 	myfile.open ("candidates.csv");
-	myfile << "First Name;Last Name;Job Title;Location;Phone Number;Email\n";
-//	for (auto applicant: candidates)
-//	{
-//		myfile << 
-//		  encryption(applicant.getFirstName(), ascii, key) + DEFAULT_CVS_CHAR 
-//		+ encryption(applicant.getLastName(), ascii, key) + DEFAULT_CVS_CHAR 
-//		+ encryption(applicant.getJobTitle(), ascii, key) + DEFAULT_CVS_CHAR 
-//		+ encryption(applicant.getLocation(), ascii, key) + DEFAULT_CVS_CHAR 
-//		+ encryption(applicant.getPhoneNumber(), ascii, key) + DEFAULT_CVS_CHAR 
-//		+ encryption(applicant.getEmail(), ascii, key) + "\n";
-//	}
-	for (auto applicant: candidates)
+	if (myfile.is_open())
 	{
-		myfile << 
-		  applicant.getFirstName() + DEFAULT_CVS_CHAR 
-		+ applicant.getLastName() + DEFAULT_CVS_CHAR 
-		+ applicant.getJobTitle() + DEFAULT_CVS_CHAR 
-		+ applicant.getLocation() + DEFAULT_CVS_CHAR 
-		+ applicant.getPhoneNumber() + DEFAULT_CVS_CHAR 
-		+ applicant.getEmail() + "\n";
+		myfile << key + "\n";
+		myfile << encryption("First Name", key) + DEFAULT_CVS_CHAR + encryption("Last Name", key) + DEFAULT_CVS_CHAR + encryption("Job Title", key) + DEFAULT_CVS_CHAR
+				+ encryption("Location", key) + DEFAULT_CVS_CHAR + encryption("Phone Number", key) + DEFAULT_CVS_CHAR + encryption("Email Address", key) + "\n";
+		for (auto applicant: candidates)
+		{
+			myfile << 
+			  encryption(applicant.getFirstName(), key) + DEFAULT_CVS_CHAR 
+			+ encryption(applicant.getLastName(), key) + DEFAULT_CVS_CHAR 
+			+ encryption(applicant.getJobTitle(), key) + DEFAULT_CVS_CHAR 
+			+ encryption(applicant.getLocation(), key) + DEFAULT_CVS_CHAR 
+			+ encryption(applicant.getPhoneNumber(), key) + DEFAULT_CVS_CHAR 
+			+ encryption(applicant.getEmail(), key) + "\n";
+		}
+		myfile.close();
 	}
-	myfile.close();
+	else
+	{
+		cout << "Another program is currently using this file! Please close it first and then press Enter to save.\n";
+		string pause {};
+		getline(cin, pause);
+		saveCandidates(candidates);
+	}
 }
 
 int main()
 {
 	string input;
 	vector <Applicant> candidates {};
+	
+	readCandidates(candidates);	
 	do
 	{
 		printHeader();
@@ -463,8 +513,15 @@ int main()
 			clearScreen();			
 		}
 	} while (input != "Q" && input != "q");
-	cout << endl << "Saving Candidates...";
-	saveCandidates(candidates);
+	cout << endl << "Do you want to save your changes? Y/N" << endl;
+	getline(cin, input);
+	while (input != "y" && input != "Y" && input != "yes" && input != "Yes" && input != "n" && input != "N")
+	{
+		cout << endl << "Do you want to save your changes? Y/N" << endl;
+		getline(cin, input);
+	}
+	if (input == "y" || input == "Y" || input == "yes" || input == "Yes")
+		saveCandidates(candidates);
 	getline(cin, input);
 	return (0);
 }

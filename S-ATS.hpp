@@ -18,5 +18,14 @@ Applicant newCandidate(void);
 std::string center(std::string input, int width);
 void printLine(char c);
 void clearScreen(void);
+std::vector <size_t> getDeliminatorPos(const std::string line);
+void readCandidates(std::vector <Applicant> &candidates);
+void saveCandidates(const std::vector <Applicant> &candidates);
+std::string keyGenerator(void);
+std::string encryption(std::string str, std::string key);
+std::string decryption(std::string str, std::string key);
+
+
+
 
 #endif
