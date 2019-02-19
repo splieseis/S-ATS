@@ -4,7 +4,7 @@ using namespace std;
 
 string encryption(string str, string key)
 {
-	string ascii {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!0123456789,\"?^$%&/() #=*+-~@`_.:{}[]\\|\'"};
+	string ascii {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!0123456789,?^$%&/() #=*+-~@`_.:{}[]\\|\'"};
 	size_t i {0};
 	size_t index {0};
 	for (char c: str)
@@ -19,7 +19,7 @@ string encryption(string str, string key)
 
 string decryption(string str, string key)
 {
-	string ascii {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!0123456789,\"?^$%&/() #=*+-~@`_.:{}[]\\|\'"};
+	string ascii {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!0123456789,?^$%&/() #=*+-~@`_.:{}[]\\|\'"};
 	size_t i {0};
 	size_t index {0};
 	
@@ -35,7 +35,7 @@ string decryption(string str, string key)
 
 string keyGenerator(void)
 {
-	string ascii {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!0123456789,\"?^$%&/() #=*+-~@`_.:{}[]\\|\'"};
+	string ascii {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!0123456789,?^$%&/() #=*+-~@`_.:{}[]\\|\'"};
 	int num1 {0};
 	int num2 {0};
 	int i {0};
