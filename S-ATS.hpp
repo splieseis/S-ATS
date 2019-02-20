@@ -58,4 +58,8 @@ std::string keyGenerator(void);
 std::string encryption(std::string str, std::string key);
 std::string decryption(std::string str, std::string key);
 
+/* checkFunctions.cpp */
+
+bool check(std::string input, std::string selection);
+
 #endif

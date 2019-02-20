@@ -3,8 +3,8 @@
 void imprint()
 {
 	string pause {};
-	clearScreen();
 	
+	clearScreen();
 	printHeader("Imprint");
 	cout << endl;
 	cout << "Thank you for using Simon's Applicant Tracking System! (c) Simon Plieseis 2019" << endl;
@@ -23,49 +23,49 @@ void updateDetails(vector <Applicant> &candidates, int i)
 	cout << endl;
 	cout << "What do you want to update? ";
 	getline (cin, input);
-	if (input == "First Name" || input == "first name" || input == "First name")
+	if (check(input, "FIRST_NAME"))
 	{
 		cout << "\nCurrent First Name: " << candidates.at(i).getFirstName() << "-> New First Name: ";
 		getline(cin, input);
 		candidates.at(i).setFirstName(input);
 		cout << "\nFirst Name succefully updated to " << candidates.at(i).getFirstName() << ". " << endl;
 	}
-	else if (input == "Last Name" || input == "last name" || input == "Last name")
+	else if (check(input, "LAST_NAME"))
 	{
 		cout << "\nCurrent Last Name: " << candidates.at(i).getLastName() << "-> New Last Name: ";
 		getline(cin, input);
 		candidates.at(i).setLastName(input);
 		cout << "\nLast Name succefully updated to " << candidates.at(i).getLastName() << ". " << endl;
 	}
-	else if (input == "Job Title" || input == "job title" || input == "Job title")
+	else if (check(input, "JOB"))
 	{
 		cout << "\nCurrent Job Title: " << candidates.at(i).getJobTitle() << "-> New Job Title: ";
 		getline(cin, input);
 		candidates.at(i).setJobTitle(input);
 		cout << "\nJob Title succefully updated to " << candidates.at(i).getJobTitle() << ". " << endl;
 	}
-	else if (input == "Location" || input == "location")
+	else if (check(input, "LOCATION"))
 	{
 		cout << "\nCurrent Location: " << candidates.at(i).getLocation() << "-> New Location: ";
 		getline(cin, input);
 		candidates.at(i).setLocation(input);
 		cout << "\nLocation succefully updated to " << candidates.at(i).getLocation() << ". " << endl;
 	}
-	else if (input == "Phone Number" || input == "phone number" || input == "Phone number" || input == "phone")
+	else if (check(input, "PHONE"))
 	{
 		cout << "\nCurrent Phone Number: " << candidates.at(i).getPhoneNumber() << "-> New Phone Number: ";
 		getline(cin, input);
 		candidates.at(i).setPhoneNumber(input);
 		cout << "\nPhone Number succefully updated to " << candidates.at(i).getPhoneNumber() << ". " << endl;
 	}
-	else if (input == "Email" || input == "email" || input == "Email address" || input == "email address")
+	else if (check(input, "EMAIL"))
 	{
 		cout << "\nCurrent Email Address: " << candidates.at(i).getEmail() << "-> New Email Address: ";
 		getline(cin, input);
 		candidates.at(i).setEmail(input);
 		cout << "\nEmail succefully updated to " << candidates.at(i).getEmail() << ". " << endl;
 	}
-	else if (input == "Q" || input == "q")
+	else if (check(input, "QUIT"))
 	{
 		clearScreen();
 		return;
@@ -77,9 +77,9 @@ void updateDetails(vector <Applicant> &candidates, int i)
 		clearScreen();
 		updateDetails(candidates, i);
 	}
-	cout << "\nDo you want to update anything else? Y/N ";
+	cout << "\nDo you want to update anything else? ";
 	getline (cin, input);
-	if (input == "Y" || input == "y" || input == "Yes" || input == "yes")
+	if (check(input, "YES"))
 		updateDetails(candidates, i);
 	clearScreen();
 }
@@ -104,9 +104,9 @@ void details(vector <Applicant> &candidates, int i)
 	cout << endl;
 	cout << "U - Update \tQ - Quit" << endl;
 	getline (cin, input);
-	if (input == "u" || input == "U")
+	if (check(input, "UPDATE"))
 		updateDetails(candidates, i);
-	else if (input == "q" || input == "Q")
+	else if (check(input, "QUIT"))
 		clearScreen();
 	else
 	{
@@ -155,7 +155,7 @@ void printList(vector <Applicant> &candidates)
 				listCandidates(candidates);
 			}
 		}
-		else if (input[0] == 'q' || input[0] == 'Q')
+		else if (check(input, "QUIT"))
 			clearScreen();
 		else
 		{
@@ -182,7 +182,6 @@ void listCandidates(vector <Applicant> &candidates)
 
 Applicant newCandidate(void)
 {
-	clearScreen();
 	string input;
 	Applicant newCandidate;
 
@@ -224,7 +223,6 @@ void search(vector <Applicant> candidates)
 	string phone {};
 	string email {};
 	
-	clearScreen();
 	printHeader("Search");
 	cout << endl;
 	cout << "What are you looking for? ";
@@ -298,7 +296,8 @@ void readCandidates(vector <Applicant> &candidates)
 	ifstream myfile;
 	vector <size_t> deliminatorPos {};
 
-	cout << "Filename: ";
+	printHeader("HOME");
+	cout << "\nFilename: ";
 	getline(cin, name);
 	name.empty() ? name = DEFAULT_FILENAME : name = name;
 	myfile.open (path + name + fileExtension);
@@ -330,12 +329,12 @@ void saveCandidates(const vector <Applicant> &candidates)
 	
 	cout << endl << "Do you want to save your changes? Y/N" << endl;
 	getline(cin, input);
-	while (input != "y" && input != "Y" && input != "yes" && input != "Yes" && input != "n" && input != "N")
+	while (!check(input, "YES") && !check(input, "NO"))
 	{
 		cout << endl << "Do you want to save your changes? Y/N" << endl;
 		getline(cin, input);
 	}
-	if (input == "y" || input == "Y" || input == "yes" || input == "Yes")
+	if (check(input, "YES"))
 	{
 		string path {"data\\"};
 		string name {};
@@ -373,6 +372,8 @@ void saveCandidates(const vector <Applicant> &candidates)
 			saveCandidates(candidates);
 		}
 	}
+	else
+		cout << "Changes discarded!";
 }
 
 void exeMainMenu(vector <Applicant> &candidates)
@@ -388,28 +389,28 @@ void exeMainMenu(vector <Applicant> &candidates)
 		cout << "What do you wanna do?: ";
 		getline (cin, input);
 		cout << endl;
-		if (input == "N" || input == "n")
+		if (check(input, "NEW"))
 		{
 			Applicant newApplicant;
 			newApplicant = newCandidate();
 			candidates.push_back(newApplicant);
 		}
-		else if (input == "L" || input == "l")
+		else if (check(input, "LIST"))
 			listCandidates(candidates);
-		else if (input == "S" || input == "s")
+		else if (check(input, "SEARCH"))
 			search(candidates);
-		else if (input == "D" || input == "d")
+		else if (check(input, "DELETE"))
 		{
 			candidates.clear();
 			clearScreen();
 		}
 		else if (input == "Z" || input == "z")
 			clearScreen();
-		else if (input == "P" || input == "p")
+		else if (check(input, "SETTINGS"))
 			;
-		else if (input == "I" || input == "i")
+		else if (check(input, "IMPRINT"))
 			imprint();
-		else if (input == "Q" || input == "q")
+		else if (check(input, "QUIT"))
 			cout << "Thank you for using S-ATS! See you soon!" << endl;
 		else
 		{
@@ -417,5 +418,5 @@ void exeMainMenu(vector <Applicant> &candidates)
 			getline (cin, input);
 			clearScreen();
 		}
-	} while (input != "Q" && input != "q");
+	} while (!check(input, "QUIT"));
 }
