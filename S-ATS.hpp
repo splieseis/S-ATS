@@ -48,6 +48,7 @@ void printDetails(std::vector <Applicant> &candidates, int i);
 Applicant newCandidate(void);
 std::vector <size_t> getDeliminatorPos(const std::string line);
 void search(std::vector <Applicant> candidates);
+void deleteCandidate(vector <Applicant> &candidates, int i);
 
 /* utilities.cpp */
 

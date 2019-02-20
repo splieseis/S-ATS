@@ -72,7 +72,7 @@ void updateDetails(vector <Applicant> &candidates, int i)
 	}
 	else
 	{
-		cout << "Please enter a valid field: [ First Name, Last Name, Job Title, Location, Phone number, Email ]" << endl;
+		cout << "\nPlease enter a valid field: [ First Name, Last Name, Job Title, Location, Phone number, Email ]" << endl;
 		getline(cin, input);
 		clearScreen();
 		updateDetails(candidates, i);
@@ -94,6 +94,14 @@ void printDetails(vector <Applicant> &candidates, int i)
 	cout << "Email Address: " << candidates.at(i).getEmail() << endl;
 }
 
+void deleteCandidate(vector <Applicant> &candidates, int i)
+{
+	string input {};
+	candidates.erase(candidates.begin() + i);
+	cout << "\nDeleting candidate...";
+	getline(cin, input);
+}
+
 void details(vector <Applicant> &candidates, int i)
 {
 	string input{};
@@ -102,15 +110,17 @@ void details(vector <Applicant> &candidates, int i)
 	cout << endl;
 	printDetails(candidates, i);
 	cout << endl;
-	cout << "U - Update \tQ - Quit" << endl;
+	cout << "U - Update \tD - Delete \tQ - Quit" << endl << endl;
 	getline (cin, input);
 	if (check(input, "UPDATE"))
 		updateDetails(candidates, i);
+	else if (check(input, "DELETE"))
+		deleteCandidate(candidates, i);
 	else if (check(input, "QUIT"))
 		clearScreen();
 	else
 	{
-		cout << "Please enter valid input: [ U, Q ]";
+		cout << "Please enter a valid input: [ U, D, Q ]";
 		getline (cin, input);
 		clearScreen();
 		details(candidates, i);
@@ -383,7 +393,7 @@ void exeMainMenu(vector <Applicant> &candidates)
 	{
 		printHeader("Main Menu");
 		cout << " N - New Applicant \tL - List Applicants \tS - Search \tZ - Clear screen"; // not ideal for resizing, vector with menu links
-		cout << "\tD - Delete List \tP - Preferences \tI - Imprint \tQ - Quit " << endl;
+		cout << "\tP - Preferences \tI - Imprint \tQ - Quit " << endl;
 		printLine(DEFAULT_LINE_CHAR);
 		cout << endl;
 		cout << "What do you wanna do?: ";
@@ -399,11 +409,6 @@ void exeMainMenu(vector <Applicant> &candidates)
 			listCandidates(candidates);
 		else if (check(input, "SEARCH"))
 			search(candidates);
-		else if (check(input, "DELETE"))
-		{
-			candidates.clear();
-			clearScreen();
-		}
 		else if (input == "Z" || input == "z")
 			clearScreen();
 		else if (check(input, "SETTINGS"))
@@ -414,7 +419,7 @@ void exeMainMenu(vector <Applicant> &candidates)
 			cout << "Thank you for using S-ATS! See you soon!" << endl;
 		else
 		{
-			cout << "Please enter a valid input  [N, L, S, Z, D, P, I, Q]" << endl;
+			cout << "Please enter a valid input  [N, L, S, Z, P, I, Q]" << endl;
 			getline (cin, input);
 			clearScreen();
 		}
