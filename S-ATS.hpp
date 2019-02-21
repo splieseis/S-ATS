@@ -15,13 +15,11 @@
 /* Header files */
 
 # include "Applicant.class.hpp"
-
+# include "Settings.class.hpp"
 
 /* Global vars (soon replaced) */
 
 using namespace std;
-const int PROGRAM_WIDTH = 171;
-const char DEFAULT_LINE_CHAR = '~';
 const char DEFAULT_CSV_CHAR = ';';
 const std::string DEFAULT_FILENAME = "candidates";
 
@@ -30,34 +28,35 @@ const std::string DEFAULT_FILENAME = "candidates";
 
 /* main.cpp */
 
-void readCandidates(std::vector <Applicant> &candidates);
-void exeMainMenu(std::vector <Applicant> &candidates);
-void saveCandidates(const std::vector <Applicant> &candidates);
+void readCandidates(std::vector <Applicant> &candidates, Settings &settings);
+void exeMainMenu(std::vector <Applicant> &candidates, Settings &settings);
+void saveCandidates(const std::vector <Applicant> &candidates, Settings &settings);
 
 /* pageHeaders.cpp */
 
-void printHeader(std::string menuTitle);
+void printHeader(std::string menuTitle, Settings &settings);
 
 /* mainFunctions.cpp */
 
-void imprint();
-void details(std::vector <Applicant> &candidates, int i);
-void listCandidates(std::vector <Applicant> &candidates);
-void printList(std::vector <Applicant> &candidates);
+void imprint(Settings &settings);
+void details(std::vector <Applicant> &candidates, Settings &settings, int i);
+void updateDetails(vector <Applicant> &candidates, Settings &settings, int i);
+void listCandidates(std::vector <Applicant> &candidates, Settings &settings);
+void printList(std::vector <Applicant> &candidates, Settings &settings);
 void printDetails(std::vector <Applicant> &candidates, int i);
-Applicant newCandidate(void);
+Applicant newCandidate(Settings &settings);
 std::vector <size_t> getDeliminatorPos(const std::string line);
-void search(std::vector <Applicant> candidates);
+void search(std::vector <Applicant> candidates, Settings &settings);
 void deleteCandidate(vector <Applicant> &candidates, int i);
 
 /* utilities.cpp */
 
 std::string center(std::string input, int width);
-void printLine(char c);
+void printLine(Settings &settings);
 void clearScreen(void);
 std::string keyGenerator(void);
-std::string encryption(std::string str, std::string key);
-std::string decryption(std::string str, std::string key);
+std::string encryption(std::string str, std::string key, Settings &settings);
+std::string decryption(std::string str, std::string key, Settings &settings);
 
 /* checkFunctions.cpp */
 

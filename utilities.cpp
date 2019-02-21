@@ -1,32 +1,38 @@
 #include "S-ATS.hpp"
 
-string encryption(string str, string key)
+string encryption(string str, string key, Settings &settings)
 {
 	string ascii {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!0123456789,?^$%&/() #=*+-~@`_.:{}[]\\|\'"};
 	size_t i {0};
 	size_t index {0};
-	for (char c: str)
+	if (settings.getEncryption())
 	{
-		i = ascii.find(c);
-		if (i != string::npos)
-			str.at(index) = key.at(i);
-		index++;
+		for (char c: str)
+		{
+			i = ascii.find(c);
+			if (i != string::npos)
+				str.at(index) = key.at(i);
+			index++;
+		}
 	}
 	return (str);
 }
 
-string decryption(string str, string key)
+string decryption(string str, string key, Settings &settings)
 {
 	string ascii {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!0123456789,?^$%&/() #=*+-~@`_.:{}[]\\|\'"};
 	size_t i {0};
 	size_t index {0};
 	
-	for (char c: str)
+	if (settings.getEncryption())
 	{
-		i = key.find(c);
-		if (i != string::npos)
-			str.at(index) = ascii.at(i);
-		index++;
+		for (char c: str)
+		{
+			i = key.find(c);
+			if (i != string::npos)
+				str.at(index) = ascii.at(i);
+			index++;
+		}
 	}
 	return (str);
 }
@@ -51,11 +57,12 @@ string keyGenerator(void)
 	return (ascii);
 }
 
-void printLine(char c)
+void printLine(Settings &settings)
 {
 	int i;
-	for (i = 0; i < PROGRAM_WIDTH; i++)
-		cout << c;
+	int max = settings.getProgramWidth();
+	for (i = 0; i < max; i++)
+		cout << settings.getLineChar();
 	cout << endl;
 }
 

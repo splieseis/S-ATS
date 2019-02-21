@@ -12,6 +12,11 @@ bool check(string input, string selection)
 		if (input == "N" || input == "n" || input == "No" || input == "NO" || input == "no")
 			return (true);
 	}
+	else if (selection == "ON")
+	{
+		if (input == "On" || input == "on" || input == "ON")
+			return (true);
+	}
 	else if (selection == "NEW")
 	{
 		if (input == "N" || input == "n" || input == "New" || input == "NEW" || input == "new")

@@ -1,11 +1,20 @@
 #include "S-ATS.hpp"
 
+void initSettings(Settings &settings)
+{
+	settings.setProgramWidth(171);
+	settings.setLineChar('~');
+	settings.setEncryption(false);
+}
+
 int main()
 {
 	vector <Applicant> candidates {};
+	Settings settings {};
 	
-	readCandidates(candidates);
-	exeMainMenu(candidates);
-	saveCandidates(candidates);
+	initSettings(settings);
+	readCandidates(candidates, settings);
+	exeMainMenu(candidates, settings);
+	saveCandidates(candidates, settings);
 	return (0);
 }
