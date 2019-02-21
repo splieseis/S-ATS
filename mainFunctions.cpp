@@ -25,42 +25,42 @@ void updateDetails(vector <Applicant> &candidates, Settings &settings, int i)
 	getline (cin, input);
 	if (check(input, "FIRST_NAME"))
 	{
-		cout << "\nCurrent First Name: " << candidates.at(i).getFirstName() << "-> New First Name: ";
+		cout << "\nCurrent First Name: " << candidates.at(i).getFirstName() << " -> New First Name: ";
 		getline(cin, input);
 		candidates.at(i).setFirstName(input);
 		cout << "\nFirst Name succefully updated to " << candidates.at(i).getFirstName() << ". " << endl;
 	}
 	else if (check(input, "LAST_NAME"))
 	{
-		cout << "\nCurrent Last Name: " << candidates.at(i).getLastName() << "-> New Last Name: ";
+		cout << "\nCurrent Last Name: " << candidates.at(i).getLastName() << " -> New Last Name: ";
 		getline(cin, input);
 		candidates.at(i).setLastName(input);
 		cout << "\nLast Name succefully updated to " << candidates.at(i).getLastName() << ". " << endl;
 	}
 	else if (check(input, "JOB"))
 	{
-		cout << "\nCurrent Job Title: " << candidates.at(i).getJobTitle() << "-> New Job Title: ";
+		cout << "\nCurrent Job Title: " << candidates.at(i).getJobTitle() << " -> New Job Title: ";
 		getline(cin, input);
 		candidates.at(i).setJobTitle(input);
 		cout << "\nJob Title succefully updated to " << candidates.at(i).getJobTitle() << ". " << endl;
 	}
 	else if (check(input, "LOCATION"))
 	{
-		cout << "\nCurrent Location: " << candidates.at(i).getLocation() << "-> New Location: ";
+		cout << "\nCurrent Location: " << candidates.at(i).getLocation() << " -> New Location: ";
 		getline(cin, input);
 		candidates.at(i).setLocation(input);
 		cout << "\nLocation succefully updated to " << candidates.at(i).getLocation() << ". " << endl;
 	}
 	else if (check(input, "PHONE"))
 	{
-		cout << "\nCurrent Phone Number: " << candidates.at(i).getPhoneNumber() << "-> New Phone Number: ";
+		cout << "\nCurrent Phone Number: " << candidates.at(i).getPhoneNumber() << " -> New Phone Number: ";
 		getline(cin, input);
 		candidates.at(i).setPhoneNumber(input);
 		cout << "\nPhone Number succefully updated to " << candidates.at(i).getPhoneNumber() << ". " << endl;
 	}
 	else if (check(input, "EMAIL"))
 	{
-		cout << "\nCurrent Email Address: " << candidates.at(i).getEmail() << "-> New Email Address: ";
+		cout << "\nCurrent Email Address: " << candidates.at(i).getEmail() << " -> New Email Address: ";
 		getline(cin, input);
 		candidates.at(i).setEmail(input);
 		cout << "\nEmail succefully updated to " << candidates.at(i).getEmail() << ". " << endl;
@@ -153,7 +153,7 @@ void printList(vector <Applicant> &candidates, Settings &settings)
 		cout << endl;
 		cout << "Enter Candidate Index for Details: ";
 		getline (cin, input);
-		if (isdigit(input[0]))
+		if (checkInt(input))
 		{
 			index = stoi(input);
 			if (index > 0 && index <= static_cast<int>(candidates.size()))
@@ -286,7 +286,7 @@ vector <size_t> getDeliminatorPos(const string line)
 	vector <size_t> deliminatorPos {};
 	size_t pos {0};
 	size_t len = line.size();
-	deliminatorPos.push_back(0);
+	deliminatorPos.push_back(-1); // to start from 0 with at(0) + 1
 	while (pos < len)
 	{
 		if (line.at(pos) == DEFAULT_CSV_CHAR)
@@ -310,17 +310,25 @@ void readCandidates(vector <Applicant> &candidates, Settings &settings)
 	cout << "\nFilename: ";
 	getline(cin, name);
 	name.empty() ? name = DEFAULT_FILENAME : name = name;
+	settings.setFilename(name + fileExtension);
 	myfile.open (path + name + fileExtension);
 	if (myfile.is_open())
 	{
-		if (settings.getEncryption())
-			getline(myfile, key);
-		getline(myfile, line); // to skip the header line
+		getline(myfile, line);
+		if (line.size() == 91) // key len 91 
+		{
+			key = line;
+			settings.setEncryption(true);
+			getline(myfile, line); // to skip the header line
+		}
+		else
+			settings.setEncryption(false);
 		while(getline(myfile, line))
 		{
 			Applicant newCandidate;
  			deliminatorPos = getDeliminatorPos(line);
-			newCandidate.setFirstName(decryption(line.substr(deliminatorPos.at(0), (deliminatorPos.at(1) - deliminatorPos.at(0))), key, settings));
+			cout << deliminatorPos.size();
+			newCandidate.setFirstName(decryption(line.substr(deliminatorPos.at(0) + 1, (deliminatorPos.at(1) - 1 - deliminatorPos.at(0))), key, settings));
 			newCandidate.setLastName(decryption(line.substr(deliminatorPos.at(1) + 1, (deliminatorPos.at(2) - 1 - deliminatorPos.at(1))), key, settings));
 			newCandidate.setJobTitle(decryption(line.substr(deliminatorPos.at(2) + 1, (deliminatorPos.at(3) - 1 - deliminatorPos.at(2))), key, settings));
 			newCandidate.setLocation(decryption(line.substr(deliminatorPos.at(3) + 1, (deliminatorPos.at(4) - 1 - deliminatorPos.at(3))), key, settings));
@@ -348,15 +356,15 @@ void saveCandidates(const vector <Applicant> &candidates, Settings &settings)
 	if (check(input, "YES"))
 	{
 		string path {"data\\"};
-		string name {};
-		string fileExtension {".csv"};
+//		string name {};
+//		string fileExtension {".csv"};
 		string key = keyGenerator();
 		ofstream myfile;
 		
-		cout << "Filename: ";
-		getline(cin, name);
-		name.empty() ? name = DEFAULT_FILENAME : name = name;
-		myfile.open (path + name + fileExtension);
+//		cout << "Filename: ";
+//		getline(cin, name);
+//		name.empty() ? name = DEFAULT_FILENAME : name = name;
+		myfile.open (path + settings.getFilename());
 		if (myfile.is_open())
 		{	
 			cout << endl << "Saving Candidates...";
@@ -379,13 +387,44 @@ void saveCandidates(const vector <Applicant> &candidates, Settings &settings)
 		else
 		{
 			cout << "Another program is currently using this file! Please close it first and then press Enter to save.\n";
-			string pause {};
-			getline(cin, pause);
+			getline(cin, input);
 			saveCandidates(candidates, settings);
 		}
 	}
 	else
 		cout << "Changes discarded!";
+	getline (cin, input);
+}
+
+void updateSettings(Settings &settings)
+{
+	string input {};
+	
+	printHeader("Update Settings", settings);
+	cout << endl;
+	printSettings(settings);
+	cout << endl;
+	cout << "What do you want to update? ";
+	getline(cin, input);
+	if (input == "progwidth")
+	{
+		cout << "\nCurrent Program Width: " << settings.getProgramWidth() << " -> New Program Width: ";
+		getline(cin, input);
+		if (checkInt(input))
+		{
+			if (38 <= stoi(input) && stoi(input) <= 171)
+			{
+				settings.setProgramWidth(stoi(input));
+				cout << "\nProgram Width succefully updated to " << settings.getProgramWidth() << "." << endl;
+			}
+			else
+			{
+				cout << "\nPlease enter a program width from [ 38 - 171 ]";
+				getline(cin, input);
+			}
+		}
+		getline(cin, input);
+	}
 }
 
 void printSettings(Settings &settings)
@@ -401,35 +440,15 @@ void printSettings(Settings &settings)
 void preferences(Settings &settings)
 {
 	string input {};
-//	int num;
-	
+
 	printHeader("Settings", settings);
 	cout << endl;
 	printSettings(settings);
 	cout << endl;
 	cout << "U - Update \tD - Default \tQ - Quit" << endl << endl;
 	getline(cin, input);
-	if (input == "on")
-		settings.setEncryption(true);
-	else if (input == "off")
-		settings.setEncryption(false);
-//	cout << "Program Width: " << settings.getProgramWidth();
-//	getline(cin, input);
-//	if (isdigit(input[0]))
-//	{
-//		num = stoi(input);
-//		if (num && 38 <= num && num <= 171)
-//			settings.setProgramWidth(num);
-//		else
-//		{
-//			cout << "Please enter a program width from [ 38 - 171 ]";
-//			getline(cin, input);
-//		}
-//		cout << "Line char: " << settings.getLineChar();
-//		getline(cin, input);
-//		settings.setLineChar(input[0]);
-//		getline(cin, input);
-//	}
+	if (check(input, "UPDATE"))
+		updateSettings(settings);
 }
 
 void exeMainMenu(vector <Applicant> &candidates, Settings &settings)

@@ -4,6 +4,7 @@
 /* Libraries */
 
 # include <iostream>
+# include <iomanip>
 # include <vector>
 # include <string>
 # include <locale>
@@ -48,6 +49,9 @@ Applicant newCandidate(Settings &settings);
 std::vector <size_t> getDeliminatorPos(const std::string line);
 void search(std::vector <Applicant> candidates, Settings &settings);
 void deleteCandidate(vector <Applicant> &candidates, int i);
+void printSettings(Settings &settings);
+void preferences(Settings &settings);
+void updateSettings(Settings &settings);
 
 /* utilities.cpp */
 
@@ -61,5 +65,6 @@ std::string decryption(std::string str, std::string key, Settings &settings);
 /* checkFunctions.cpp */
 
 bool check(std::string input, std::string selection);
+bool checkInt(std::string input);
 
 #endif

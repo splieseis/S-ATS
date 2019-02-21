@@ -31,6 +31,12 @@ void Settings::setEncryption(bool stage)
 	return ;
 }
 
+void Settings::setFilename(string name)
+{
+	this->_FILENAME = name;
+	return ;
+}
+
 /* Getters */
 
 int Settings::getProgramWidth(void)
@@ -46,4 +52,9 @@ char Settings::getLineChar(void)
 bool Settings::getEncryption(void)
 {
 	return (this->_ENCRYPTION);
+}
+
+string Settings::getFilename(void)
+{
+	return (this->_FILENAME);
 }

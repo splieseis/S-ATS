@@ -1,5 +1,12 @@
 #include "S-ATS.hpp"
 
+bool checkInt(string input)
+{
+	if (isdigit(input[0]))
+		return (true);
+	return (false);
+}
+
 bool check(string input, string selection)
 {
 	if (selection == "YES")
