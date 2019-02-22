@@ -37,6 +37,12 @@ void Settings::setFilename(string name)
 	return ;
 }
 
+void Settings::setCsvDelimiter(char c)
+{
+	this->_CSV_DELIMITER = c;
+	return ;
+}
+
 /* Getters */
 
 int Settings::getProgramWidth(void)
@@ -57,4 +63,9 @@ bool Settings::getEncryption(void)
 string Settings::getFilename(void)
 {
 	return (this->_FILENAME);
+}
+
+char Settings::getCsvDelimiter(void)
+{
+	return (this->_CSV_DELIMITER);
 }

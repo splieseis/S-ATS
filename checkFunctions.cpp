@@ -94,5 +94,25 @@ bool check(string input, string selection)
 		if (input == "U" || input == "u" || input == "Update" || input == "update" || input == "UPDATE")
 			return (true);
 	}
+	else if (selection == "PROGWIDTH")
+	{
+		if (input == "Prog width" || input == "prog width" || input == "width" || input == "Width" || input == "w" || input == "W")
+			return (true);
+	}
+	else if (selection == "LINECHAR")
+	{
+		if (input == "Line char" || input == "line char" || input == "line" || input == "Line" || input == "l" || input == "L")
+			return (true);
+	}
+	else if (selection == "ENCRYPTION")
+	{
+		if (input == "Encryption" || input == "encryption" || input == "e" || input == "E")
+			return (true);
+	}
+	else if (selection == "DELIMITER")
+	{
+		if (input == "Delimiter" || input == "delimiter" || input == "d" || input == "D" || input == "delim" || input == "csv" || input == "CSV")
+			return (true);
+	}
 	return (false);
 }

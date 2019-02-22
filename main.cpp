@@ -4,7 +4,7 @@ void initSettings(Settings &settings)
 {
 	settings.setProgramWidth(171);
 	settings.setLineChar('~');
-	settings.setEncryption(false);
+	settings.setEncryption(true);
 }
 
 int main()

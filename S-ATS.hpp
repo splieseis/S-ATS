@@ -18,12 +18,7 @@
 # include "Applicant.class.hpp"
 # include "Settings.class.hpp"
 
-/* Global vars (soon replaced) */
-
 using namespace std;
-const char DEFAULT_CSV_CHAR = ';';
-const std::string DEFAULT_FILENAME = "candidates";
-
 
 /* Function Prototypes */
 
@@ -46,12 +41,14 @@ void listCandidates(std::vector <Applicant> &candidates, Settings &settings);
 void printList(std::vector <Applicant> &candidates, Settings &settings);
 void printDetails(std::vector <Applicant> &candidates, int i);
 Applicant newCandidate(Settings &settings);
-std::vector <size_t> getDeliminatorPos(const std::string line);
+std::vector <size_t> getDeliminatorPos(const std::string line, char c);
 void search(std::vector <Applicant> candidates, Settings &settings);
 void deleteCandidate(vector <Applicant> &candidates, int i);
 void printSettings(Settings &settings);
 void preferences(Settings &settings);
 void updateSettings(Settings &settings);
+void initDelimiter(std::string line, Settings &settings);
+
 
 /* utilities.cpp */
 

@@ -25,45 +25,45 @@ void updateDetails(vector <Applicant> &candidates, Settings &settings, int i)
 	getline (cin, input);
 	if (check(input, "FIRST_NAME"))
 	{
-		cout << "\nCurrent First Name: " << candidates.at(i).getFirstName() << " -> New First Name: ";
+		cout << "\nCurrent First Name: [" << candidates.at(i).getFirstName() << "] -> New First Name: ";
 		getline(cin, input);
 		candidates.at(i).setFirstName(input);
-		cout << "\nFirst Name succefully updated to " << candidates.at(i).getFirstName() << ". " << endl;
+		cout << "\nFirst Name succefully updated to [" << candidates.at(i).getFirstName() << "]." << endl;
 	}
 	else if (check(input, "LAST_NAME"))
 	{
-		cout << "\nCurrent Last Name: " << candidates.at(i).getLastName() << " -> New Last Name: ";
+		cout << "\nCurrent Last Name: [" << candidates.at(i).getLastName() << "] -> New Last Name: ";
 		getline(cin, input);
 		candidates.at(i).setLastName(input);
-		cout << "\nLast Name succefully updated to " << candidates.at(i).getLastName() << ". " << endl;
+		cout << "\nLast Name succefully updated to [" << candidates.at(i).getLastName() << "]." << endl;
 	}
 	else if (check(input, "JOB"))
 	{
-		cout << "\nCurrent Job Title: " << candidates.at(i).getJobTitle() << " -> New Job Title: ";
+		cout << "\nCurrent Job Title: [" << candidates.at(i).getJobTitle() << "] -> New Job Title: ";
 		getline(cin, input);
 		candidates.at(i).setJobTitle(input);
-		cout << "\nJob Title succefully updated to " << candidates.at(i).getJobTitle() << ". " << endl;
+		cout << "\nJob Title succefully updated to [" << candidates.at(i).getJobTitle() << "]." << endl;
 	}
 	else if (check(input, "LOCATION"))
 	{
-		cout << "\nCurrent Location: " << candidates.at(i).getLocation() << " -> New Location: ";
+		cout << "\nCurrent Location: [" << candidates.at(i).getLocation() << "] -> New Location: ";
 		getline(cin, input);
 		candidates.at(i).setLocation(input);
-		cout << "\nLocation succefully updated to " << candidates.at(i).getLocation() << ". " << endl;
+		cout << "\nLocation succefully updated to [" << candidates.at(i).getLocation() << "]." << endl;
 	}
 	else if (check(input, "PHONE"))
 	{
-		cout << "\nCurrent Phone Number: " << candidates.at(i).getPhoneNumber() << " -> New Phone Number: ";
+		cout << "\nCurrent Phone Number: [" << candidates.at(i).getPhoneNumber() << "] -> New Phone Number: ";
 		getline(cin, input);
 		candidates.at(i).setPhoneNumber(input);
-		cout << "\nPhone Number succefully updated to " << candidates.at(i).getPhoneNumber() << ". " << endl;
+		cout << "\nPhone Number succefully updated to [" << candidates.at(i).getPhoneNumber() << "]." << endl;
 	}
 	else if (check(input, "EMAIL"))
 	{
-		cout << "\nCurrent Email Address: " << candidates.at(i).getEmail() << " -> New Email Address: ";
+		cout << "\nCurrent Email Address: [" << candidates.at(i).getEmail() << "] -> New Email Address: ";
 		getline(cin, input);
 		candidates.at(i).setEmail(input);
-		cout << "\nEmail succefully updated to " << candidates.at(i).getEmail() << ". " << endl;
+		cout << "\nEmail succefully updated to [" << candidates.at(i).getEmail() << "]." << endl;
 	}
 	else if (check(input, "QUIT"))
 	{
@@ -281,7 +281,7 @@ void search(vector <Applicant> candidates, Settings &settings)
 	clearScreen();
 }
 
-vector <size_t> getDeliminatorPos(const string line)
+vector <size_t> getDeliminatorPos(const string line, char c)
 {
 	vector <size_t> deliminatorPos {};
 	size_t pos {0};
@@ -289,11 +289,26 @@ vector <size_t> getDeliminatorPos(const string line)
 	deliminatorPos.push_back(-1); // to start from 0 with at(0) + 1
 	while (pos < len)
 	{
-		if (line.at(pos) == DEFAULT_CSV_CHAR)
+		if (line.at(pos) == c)
 			deliminatorPos.push_back(pos);
 		pos++;
 	}
 	return (deliminatorPos);
+}
+
+void initDelimiter(string line, Settings &settings)
+{
+	int i {0};
+	while (line[i])
+	{
+		if (line[i] == ';')
+			settings.setCsvDelimiter(';');
+		else if (line[i] == ',')
+			settings.setCsvDelimiter(',');
+		else if (line[i] == ':')
+			settings.setCsvDelimiter(':');
+		i++;
+	}
 }
 
 void readCandidates(vector <Applicant> &candidates, Settings &settings)
@@ -309,24 +324,28 @@ void readCandidates(vector <Applicant> &candidates, Settings &settings)
 	printHeader("HOME", settings);
 	cout << "\nFilename: ";
 	getline(cin, name);
-	name.empty() ? name = DEFAULT_FILENAME : name = name;
+	name.empty() ? name = "candidates" : name = name;
 	settings.setFilename(name + fileExtension);
 	myfile.open (path + name + fileExtension);
 	if (myfile.is_open())
 	{
 		getline(myfile, line);
-		if (line.size() == 91) // key len 91 
+		if (line.size() == 88) // key len 88 
 		{
 			key = line;
 			settings.setEncryption(true);
 			getline(myfile, line); // to skip the header line
+			initDelimiter(line, settings);
 		}
 		else
+		{
 			settings.setEncryption(false);
+			initDelimiter(line, settings);
+		}
 		while(getline(myfile, line))
 		{
 			Applicant newCandidate;
- 			deliminatorPos = getDeliminatorPos(line);
+ 			deliminatorPos = getDeliminatorPos(line, settings.getCsvDelimiter());
 			cout << deliminatorPos.size();
 			newCandidate.setFirstName(decryption(line.substr(deliminatorPos.at(0) + 1, (deliminatorPos.at(1) - 1 - deliminatorPos.at(0))), key, settings));
 			newCandidate.setLastName(decryption(line.substr(deliminatorPos.at(1) + 1, (deliminatorPos.at(2) - 1 - deliminatorPos.at(1))), key, settings));
@@ -345,6 +364,7 @@ void readCandidates(vector <Applicant> &candidates, Settings &settings)
 void saveCandidates(const vector <Applicant> &candidates, Settings &settings)
 {
 	string input {};
+	char delim = settings.getCsvDelimiter();
 	
 	cout << endl << "Do you want to save your changes? Y/N" << endl;
 	getline(cin, input);
@@ -370,16 +390,16 @@ void saveCandidates(const vector <Applicant> &candidates, Settings &settings)
 			cout << endl << "Saving Candidates...";
 			if (settings.getEncryption())
 				myfile << key + "\n";
-			myfile << encryption("First Name", key, settings) + DEFAULT_CSV_CHAR + encryption("Last Name", key, settings) + DEFAULT_CSV_CHAR + encryption("Job Title", key, settings) + DEFAULT_CSV_CHAR
-					+ encryption("Location", key, settings) + DEFAULT_CSV_CHAR + encryption("Phone Number", key, settings) + DEFAULT_CSV_CHAR + encryption("Email Address", key, settings) + "\n";
+			myfile << encryption("First Name", key, settings) + delim + encryption("Last Name", key, settings) + delim + encryption("Job Title", key, settings) + delim
+					+ encryption("Location", key, settings) + delim + encryption("Phone Number", key, settings) + delim + encryption("Email Address", key, settings) + "\n";
 			for (auto applicant: candidates)
 			{
 				myfile << 
-				  encryption(applicant.getFirstName(), key, settings) + DEFAULT_CSV_CHAR 
-				+ encryption(applicant.getLastName(), key, settings) + DEFAULT_CSV_CHAR 
-				+ encryption(applicant.getJobTitle(), key, settings) + DEFAULT_CSV_CHAR 
-				+ encryption(applicant.getLocation(), key, settings) + DEFAULT_CSV_CHAR 
-				+ encryption(applicant.getPhoneNumber(), key, settings) + DEFAULT_CSV_CHAR 
+				  encryption(applicant.getFirstName(), key, settings) + delim 
+				+ encryption(applicant.getLastName(), key, settings) + delim 
+				+ encryption(applicant.getJobTitle(), key, settings) + delim 
+				+ encryption(applicant.getLocation(), key, settings) + delim 
+				+ encryption(applicant.getPhoneNumber(), key, settings) + delim 
 				+ encryption(applicant.getEmail(), key, settings) + "\n";
 			}
 			myfile.close();
@@ -406,35 +426,94 @@ void updateSettings(Settings &settings)
 	cout << endl;
 	cout << "What do you want to update? ";
 	getline(cin, input);
-	if (input == "progwidth")
+	if (check(input, "PROGWIDTH"))
 	{
-		cout << "\nCurrent Program Width: " << settings.getProgramWidth() << " -> New Program Width: ";
+		cout << "\nCurrent Program Width: [" << settings.getProgramWidth() << "] -> New Program Width: ";
 		getline(cin, input);
 		if (checkInt(input))
 		{
 			if (38 <= stoi(input) && stoi(input) <= 171)
 			{
 				settings.setProgramWidth(stoi(input));
-				cout << "\nProgram Width succefully updated to " << settings.getProgramWidth() << "." << endl;
+				cout << "\nProgram Width succefully updated to [" << settings.getProgramWidth() << "]." << endl;
 			}
 			else
 			{
-				cout << "\nPlease enter a program width from [ 38 - 171 ]";
+				cout << "\nPlease enter a program width from [38 - 171]";
 				getline(cin, input);
 			}
 		}
 		getline(cin, input);
 	}
+	else if (check(input, "LINECHAR"))
+	{
+		cout << "\nCurrent Line Char: [" << settings.getLineChar() << "] -> New Line Char: ";
+		getline(cin, input);
+		settings.setLineChar(input[0]);
+		cout << "\nLine Char succefully updated to [" << settings.getLineChar() << "]." << endl;
+	}
+	else if (check(input, "LINECHAR"))
+	{
+		cout << "\nCurrent Line Char: [" << settings.getLineChar() << "] -> New Line Char: ";
+		getline(cin, input);
+		settings.setLineChar(input[0]);
+		cout << "\nLine Char succefully updated to [" << settings.getLineChar() << "]." << endl;
+	}
+	else if (check(input, "ENCRYPTION"))
+	{
+		cout << "\nEncryption turned ";
+		if (settings.getEncryption())
+		{
+			cout << "[OFF]";
+			settings.setEncryption(false);
+		}
+		else
+		{
+			cout << "[ON]";
+			settings.setEncryption(true);
+		}
+		getline(cin, input);
+	}
+	else if (check(input, "DELIMITER"))
+	{
+		cout << "\nDelimiter options: [;] [,] [:] ";
+		getline(cin, input);
+		if (input[0] == ';' || input[0] == ',' || input[0] == ':')
+		{
+			settings.setCsvDelimiter(input[0]);
+			cout << "\nCSV Delimiter succefully updated to [" << settings.getCsvDelimiter() << "]." << endl;
+		}
+		else
+		{
+			cout << "\nPlease choose a valid delimiter: [;] [,] [:]";
+			getline(cin, input);
+		}
+	}
+	else if (check(input, "QUIT"))
+	{
+		clearScreen();
+		return;
+	}
+	else
+	{
+		cout << "\nPlease enter a valid input: [Program width, Line char, Encryption, CSV Delimiter]" << endl;
+		getline(cin, input);
+		clearScreen();
+		updateSettings(settings);
+	}
+	cout << "\nDo you want to update anything else? ";
+	getline (cin, input);
+	if (check(input, "YES"))
+		updateSettings(settings);
 }
 
 void printSettings(Settings &settings)
 {
-	cout << "Program Width: [ " << settings.getProgramWidth() << " ]\n";
-	cout << "Line char:     [ " << settings.getLineChar() << " ]\n";
-	if (settings.getEncryption())
-		cout << "Encryption: [ ON ]\n";
-	else
-		cout << "Encryption: [ OFF ]\n";
+	cout << "Program Width: [" << settings.getProgramWidth() << "]\n";
+	cout << "Line char:     [" << settings.getLineChar() << "]\n";
+	cout << "Encryption:    [";
+	settings.getEncryption() ? cout << "ON]\n" : cout << "OFF]\n";
+	cout << "CSV Delimiter: [" << settings.getCsvDelimiter() << "]\n";
 }
 
 void preferences(Settings &settings)

@@ -2,7 +2,7 @@
 
 string encryption(string str, string key, Settings &settings)
 {
-	string ascii {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!0123456789,?^$%&/() #=*+-~@`_.:{}[]\\|\'"};
+	string ascii {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ! 0123456789?^$%&/()#=*+-~@`_{}[]\\|\'"};
 	size_t i {0};
 	size_t index {0};
 	if (settings.getEncryption())
@@ -20,7 +20,7 @@ string encryption(string str, string key, Settings &settings)
 
 string decryption(string str, string key, Settings &settings)
 {
-	string ascii {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!0123456789,?^$%&/() #=*+-~@`_.:{}[]\\|\'"};
+	string ascii {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ! 0123456789?^$%&/()#=*+-~@`_{}[]\\|\'"};
 	size_t i {0};
 	size_t index {0};
 	
@@ -39,7 +39,7 @@ string decryption(string str, string key, Settings &settings)
 
 string keyGenerator(void)
 {
-	string ascii {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!0123456789,?^$%&/() #=*+-~@`_.:{}[]\\|\'"};
+	string ascii {"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ! 0123456789?^$%&/()#=*+-~@`_{}[]\\|\'"};
 	int num1 {0};
 	int num2 {0};
 	int i {0};
