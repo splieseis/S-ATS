@@ -430,7 +430,9 @@ void updateSettings(Settings &settings)
 	{
 		cout << "\nCurrent Program Width: [" << settings.getProgramWidth() << "] -> New Program Width: ";
 		getline(cin, input);
-		if (checkInt(input))
+		if (check(input, "DEFAULT"))
+			defaultSettings(settings, "WIDTH");
+		else if (checkInt(input))
 		{
 			if (38 <= stoi(input) && stoi(input) <= 171)
 			{
@@ -443,42 +445,40 @@ void updateSettings(Settings &settings)
 				getline(cin, input);
 			}
 		}
-		getline(cin, input);
 	}
 	else if (check(input, "LINECHAR"))
 	{
 		cout << "\nCurrent Line Char: [" << settings.getLineChar() << "] -> New Line Char: ";
 		getline(cin, input);
-		settings.setLineChar(input[0]);
-		cout << "\nLine Char succefully updated to [" << settings.getLineChar() << "]." << endl;
-	}
-	else if (check(input, "LINECHAR"))
-	{
-		cout << "\nCurrent Line Char: [" << settings.getLineChar() << "] -> New Line Char: ";
-		getline(cin, input);
-		settings.setLineChar(input[0]);
-		cout << "\nLine Char succefully updated to [" << settings.getLineChar() << "]." << endl;
+		if (check(input, "DEFAULT"))
+			defaultSettings(settings, "LINE");
+		else
+		{
+			settings.setLineChar(input[0]);
+			cout << "\nLine Char succefully updated to [" << settings.getLineChar() << "]." << endl;
+		}
 	}
 	else if (check(input, "ENCRYPTION"))
 	{
 		cout << "\nEncryption turned ";
 		if (settings.getEncryption())
 		{
-			cout << "[OFF]";
+			cout << "[OFF]" << endl;
 			settings.setEncryption(false);
 		}
 		else
 		{
-			cout << "[ON]";
+			cout << "[ON]" << endl;
 			settings.setEncryption(true);
 		}
-		getline(cin, input);
 	}
 	else if (check(input, "DELIMITER"))
 	{
 		cout << "\nDelimiter options: [;] [,] [:] ";
 		getline(cin, input);
-		if (input[0] == ';' || input[0] == ',' || input[0] == ':')
+		if (check(input, "DEFAULT"))
+			defaultSettings(settings, "CSVDELIMITER");
+		else if (input[0] == ';' || input[0] == ',' || input[0] == ':')
 		{
 			settings.setCsvDelimiter(input[0]);
 			cout << "\nCSV Delimiter succefully updated to [" << settings.getCsvDelimiter() << "]." << endl;
@@ -516,6 +516,43 @@ void printSettings(Settings &settings)
 	cout << "CSV Delimiter: [" << settings.getCsvDelimiter() << "]\n";
 }
 
+void defaultSettings(Settings &settings, string selection)
+{
+	if (selection == "ALL")
+	{
+		settings.setProgramWidth(171);
+		settings.setLineChar('~');
+		settings.setEncryption(true);
+		settings.setCsvDelimiter(';');
+		cout << "\nAll settings set to default!";
+		getline(cin, selection);
+	}
+	else if (selection == "WIDTH")
+	{
+		settings.setProgramWidth(171);
+		cout << "\nProgram Width set to default: [171]";
+		getline(cin, selection);
+	}
+	else if (selection == "LINE")
+	{
+		settings.setLineChar('~');
+		cout << "\nLine char set to default: [~]";
+		getline(cin, selection);
+	}
+	else if (selection == "ENCRYPTION")
+	{
+		settings.setEncryption(true);
+		cout << "\nEncryption set to default: [ON]";
+		getline(cin, selection);
+	}
+	else if (selection == "CSVDELIMITER")
+	{
+		settings.setCsvDelimiter(';');
+		cout << "\nCSV Delimiter set to default: [;]";
+		getline(cin, selection);
+	}
+}
+
 void preferences(Settings &settings)
 {
 	string input {};
@@ -528,6 +565,16 @@ void preferences(Settings &settings)
 	getline(cin, input);
 	if (check(input, "UPDATE"))
 		updateSettings(settings);
+	else if (check(input, "DEFAULT"))
+		defaultSettings(settings, "ALL");
+	else if (check(input, "QUIT"))
+		return ;
+	else
+	{
+		cout << "Please enter a valid input: [Update, Default, Quit]\n";
+		getline(cin, input);
+		preferences(settings);
+	}
 }
 
 void exeMainMenu(vector <Applicant> &candidates, Settings &settings)

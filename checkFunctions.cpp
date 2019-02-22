@@ -114,5 +114,10 @@ bool check(string input, string selection)
 		if (input == "Delimiter" || input == "delimiter" || input == "d" || input == "D" || input == "delim" || input == "csv" || input == "CSV")
 			return (true);
 	}
+	else if (selection == "DEFAULT")
+	{
+		if (input == "Default" || input == "default" || input == "d" || input == "D")
+			return (true);
+	}
 	return (false);
 }

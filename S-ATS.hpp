@@ -47,6 +47,7 @@ void deleteCandidate(vector <Applicant> &candidates, int i);
 void printSettings(Settings &settings);
 void preferences(Settings &settings);
 void updateSettings(Settings &settings);
+void defaultSettings(Settings &settings, std::string selection);
 void initDelimiter(std::string line, Settings &settings);
 
 
