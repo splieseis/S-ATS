@@ -48,8 +48,9 @@ void printSettings(Settings &settings);
 void preferences(Settings &settings);
 void updateSettings(Settings &settings);
 void defaultSettings(Settings &settings, std::string selection);
+void saveSettings(Settings &settings);
+void readSettings(Settings &settings);
 void initDelimiter(std::string line, Settings &settings);
-
 
 /* utilities.cpp */
 

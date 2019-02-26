@@ -416,6 +416,35 @@ void saveCandidates(const vector <Applicant> &candidates, Settings &settings)
 	getline (cin, input);
 }
 
+void readSettings(Settings &settings)
+{
+	ifstream xmlSettings;
+	string line {};
+	
+	xmlSettings.open("settings.xml");
+	getline(xmlSettings, line);
+	settings.setProgramWidth(stoi(line.substr(14)));
+	getline(xmlSettings, line);
+	settings.setLineChar(line[10]);
+	getline(xmlSettings, line);
+	settings.setEncryption(line[12]);
+	getline(xmlSettings, line);
+	settings.setCsvDelimiter(line[14]);
+	xmlSettings.close();
+}
+
+void saveSettings(Settings &settings)
+{
+	ofstream xmlSettings;
+
+	xmlSettings.open("settings.xml");
+	xmlSettings << "<programWidth>" << settings.getProgramWidth() << "</programWidth>" << endl;
+	xmlSettings << "<lineChar>" << settings.getLineChar() << "</lineChar>" << endl;
+	xmlSettings << "<encryption>" << settings.getEncryption() << "</encryption>" << endl;
+	xmlSettings << "<csvDelimiter>" << settings.getCsvDelimiter() << "</csvDelimiter>" << endl;
+	xmlSettings.close();
+}
+
 void updateSettings(Settings &settings)
 {
 	string input {};
