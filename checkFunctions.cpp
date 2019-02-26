@@ -119,5 +119,10 @@ bool check(string input, string selection)
 		if (input == "Default" || input == "default" || input == "d" || input == "D")
 			return (true);
 	}
+	else if (selection == "SAVE_AS")
+	{
+		if (input == "Save as" || input == "save as" || input == "SAVE AS")
+			return (true);
+	}
 	return (false);
 }

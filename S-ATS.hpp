@@ -51,6 +51,7 @@ void defaultSettings(Settings &settings, std::string selection);
 void saveSettings(Settings &settings);
 void readSettings(Settings &settings);
 void initDelimiter(std::string line, Settings &settings);
+void saveAs(vector <Applicant> &candidates, Settings &settings);
 
 /* utilities.cpp */
 

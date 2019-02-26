@@ -606,6 +606,17 @@ void preferences(Settings &settings)
 	}
 }
 
+void saveAs(vector <Applicant> &candidates, Settings &settings)
+{
+	string input {};
+	
+	printHeader("Save as...", settings);
+	cout << "New Filename: ";
+	getline(cin, input);
+	settings.setFilename(input + ".csv");
+	saveCandidates(candidates, settings);
+}
+
 void exeMainMenu(vector <Applicant> &candidates, Settings &settings)
 {
 	string input {};
@@ -633,6 +644,8 @@ void exeMainMenu(vector <Applicant> &candidates, Settings &settings)
 			clearScreen();
 		else if (check(input, "SETTINGS"))
 			preferences(settings);
+		else if (check(input, "SAVE_AS"))
+			saveAs(candidates, settings);
 		else if (check(input, "IMPRINT"))
 			imprint(settings);
 		else if (check(input, "QUIT"))
