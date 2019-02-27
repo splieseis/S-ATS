@@ -105,7 +105,6 @@ void deleteCandidate(vector <Applicant> &candidates, int i)
 void details(vector <Applicant> &candidates, Settings &settings, int i)
 {
 	string input{};
-	clearScreen();
 	printHeader("Candidate Details", settings);
 	cout << endl;
 	printDetails(candidates, i);
@@ -122,7 +121,6 @@ void details(vector <Applicant> &candidates, Settings &settings, int i)
 	{
 		cout << "Please enter a valid input: [ U, D, Q ]";
 		getline (cin, input);
-		clearScreen();
 		details(candidates, settings, i);
 	}
 }
@@ -184,7 +182,6 @@ void printList(vector <Applicant> &candidates, Settings &settings)
 
 void listCandidates(vector <Applicant> &candidates, Settings &settings)
 {
-	clearScreen();
 	printHeader("Candidates", settings);
 	cout << endl;
 	printList(candidates, settings);
@@ -221,11 +218,38 @@ Applicant newCandidate(Settings &settings)
 	return (newCandidate);
 }
 
+//int multiFieldSearch(Applicant applicant, string input)
+//{
+//	int result {0};
+//	
+//	applicant.getFirstName().find(input) != string::npos
+//	
+//}
+
+vector <string> splitWords(string input, char del)
+{
+	vector <size_t> delimiters {};
+	vector <string> words {};
+	size_t size {};
+	size_t i {0};
+	
+	delimiters = getDelimiterPos(input, del);
+	size = delimiters.size();
+	while (i < size - 1)
+	{
+		words.push_back(input.substr(delimiters.at(i) + 1, delimiters.at(i + 1) - 1 - delimiters.at(i)));
+		i++;
+	}
+	words.push_back(input.substr(delimiters.at(i) + 1, input.size() - delimiters.at(i)));
+	return (words);
+}
+
 void search(vector <Applicant> candidates, Settings &settings)
 {
-	string search {};
+	string input {};
 	vector <int> results;
 	int i {0};
+	int index {0};
 	string firstName {};
 	string lastName {};
 	string jobTitle {};
@@ -236,20 +260,21 @@ void search(vector <Applicant> candidates, Settings &settings)
 	printHeader("Search", settings);
 	cout << endl;
 	cout << "What are you looking for? ";
-	getline(cin, search);
+	getline(cin, input);
 	for (auto applicant: candidates) // need to add to_lower conversion + nice layout
 	{
-		if (applicant.getFirstName().find(search) != string::npos)
+//		multiFieldSearch(applicant, input);
+		if (applicant.getFirstName().find(input) != string::npos)
 			results.push_back(i);
-		else if (applicant.getLastName().find(search) != string::npos)
+		else if (applicant.getLastName().find(input) != string::npos)
 			results.push_back(i);
-		else if (applicant.getJobTitle().find(search) != string::npos)
+		else if (applicant.getJobTitle().find(input) != string::npos)
 			results.push_back(i);
-		else if (applicant.getLocation().find(search) != string::npos)
+		else if (applicant.getLocation().find(input) != string::npos)
 			results.push_back(i);
-		else if (applicant.getPhoneNumber().find(search) != string::npos)
+		else if (applicant.getPhoneNumber().find(input) != string::npos)
 			results.push_back(i);
-		else if (applicant.getEmail().find(search) != string::npos)
+		else if (applicant.getEmail().find(input) != string::npos)
 			results.push_back(i);
 		i++;
 	}
@@ -271,29 +296,51 @@ void search(vector <Applicant> candidates, Settings &settings)
 			location.resize(18, ' ');
 			phone.resize(15, ' ');
 			email.resize(25, ' ');
-			cout << index << "\t|" << firstName << "|" << lastName << "|" << jobTitle << "|" 
+			cout << index + 1 << "\t|" << firstName << "|" << lastName << "|" << jobTitle << "|" 
 				<< location << "|" << phone << "|" << email << endl;
+		}
+		getline (cin, input);
+		if (checkInt(input))
+		{
+			index = stoi(input);
+			if (index > 0 && index <= static_cast<int>(candidates.size()))
+				details(candidates, settings, index - 1);
+			else
+			{
+				cout << "\nPlease enter a valid Index!" << endl;
+				getline (cin, input);
+				search(candidates, settings);
+			}
+		}
+		else if (check(input, "QUIT"))
+			;
+		else
+		{
+			cout << "\nPlease enter a valid Index!" << endl;
+			getline (cin, input);
+			search(candidates, settings);
 		}
 	}
 	else
-		cout << "No results found!" << endl;
-	getline(cin, search);
-	clearScreen();
+	{
+		cout << "\nNo results found!" << endl;
+		getline (cin, input);
+	}
 }
 
-vector <size_t> getDeliminatorPos(const string line, char c)
+vector <size_t> getDelimiterPos(const string line, char c)
 {
-	vector <size_t> deliminatorPos {};
+	vector <size_t> delimiters {};
 	size_t pos {0};
 	size_t len = line.size();
-	deliminatorPos.push_back(-1); // to start from 0 with at(0) + 1
+	delimiters.push_back(-1); // to start from 0 with at(0) + 1
 	while (pos < len)
 	{
 		if (line.at(pos) == c)
-			deliminatorPos.push_back(pos);
+			delimiters.push_back(pos);
 		pos++;
 	}
-	return (deliminatorPos);
+	return (delimiters);
 }
 
 void initDelimiter(string line, Settings &settings)
@@ -319,7 +366,7 @@ void readCandidates(vector <Applicant> &candidates, Settings &settings)
 	string line {};
 	string key {};
 	ifstream myfile;
-	vector <size_t> deliminatorPos {};
+	vector <size_t> delimiters {};
 
 	printHeader("HOME", settings);
 	cout << "\nFilename: ";
@@ -345,14 +392,13 @@ void readCandidates(vector <Applicant> &candidates, Settings &settings)
 		while(getline(myfile, line))
 		{
 			Applicant newCandidate;
- 			deliminatorPos = getDeliminatorPos(line, settings.getCsvDelimiter());
-			cout << deliminatorPos.size();
-			newCandidate.setFirstName(decryption(line.substr(deliminatorPos.at(0) + 1, (deliminatorPos.at(1) - 1 - deliminatorPos.at(0))), key, settings));
-			newCandidate.setLastName(decryption(line.substr(deliminatorPos.at(1) + 1, (deliminatorPos.at(2) - 1 - deliminatorPos.at(1))), key, settings));
-			newCandidate.setJobTitle(decryption(line.substr(deliminatorPos.at(2) + 1, (deliminatorPos.at(3) - 1 - deliminatorPos.at(2))), key, settings));
-			newCandidate.setLocation(decryption(line.substr(deliminatorPos.at(3) + 1, (deliminatorPos.at(4) - 1 - deliminatorPos.at(3))), key, settings));
-			newCandidate.setPhoneNumber(decryption(line.substr(deliminatorPos.at(4) + 1, (deliminatorPos.at(5) - 1 - deliminatorPos.at(4))), key, settings));
-			newCandidate.setEmail(decryption(line.substr(deliminatorPos.at(5) + 1, (line.size() - deliminatorPos.at(5))), key, settings));
+ 			delimiters = getDelimiterPos(line, settings.getCsvDelimiter());
+			newCandidate.setFirstName(decryption(line.substr(delimiters.at(0) + 1, (delimiters.at(1) - 1 - delimiters.at(0))), key, settings));
+			newCandidate.setLastName(decryption(line.substr(delimiters.at(1) + 1, (delimiters.at(2) - 1 - delimiters.at(1))), key, settings));
+			newCandidate.setJobTitle(decryption(line.substr(delimiters.at(2) + 1, (delimiters.at(3) - 1 - delimiters.at(2))), key, settings));
+			newCandidate.setLocation(decryption(line.substr(delimiters.at(3) + 1, (delimiters.at(4) - 1 - delimiters.at(3))), key, settings));
+			newCandidate.setPhoneNumber(decryption(line.substr(delimiters.at(4) + 1, (delimiters.at(5) - 1 - delimiters.at(4))), key, settings));
+			newCandidate.setEmail(decryption(line.substr(delimiters.at(5) + 1, (line.size() - delimiters.at(5))), key, settings));
 			candidates.push_back(newCandidate);
 		}
 		myfile.close();
