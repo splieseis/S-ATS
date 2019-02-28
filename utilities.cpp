@@ -74,3 +74,16 @@ void clearScreen(void)
 {
 	system("CLS"); // maybe I could dedect which OS is and use if/else
 }
+
+string lowerString(string input)
+{
+	size_t i {0};
+	
+	while (input[i] != '\0')
+	{
+		if ('A' <= input[i] && input[i] <= 'Z')
+			input[i] += 32;
+		i++;
+	}
+	return (input);
+}

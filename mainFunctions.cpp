@@ -218,15 +218,30 @@ Applicant newCandidate(Settings &settings)
 	return (newCandidate);
 }
 
-//int multiFieldSearch(Applicant applicant, string input)
-//{
-//	int result {0};
-//	
-//	applicant.getFirstName().find(input) != string::npos
-//	
-//}
+int multiFieldSearch(Applicant &applicant, string input)
+{
+	int result {0};
+	string lowerInput = lowerString(input);
+	vector <string> words = splitWords(lowerInput, ' ');
+	for (auto needle: words)
+	{
+		if (lowerString(applicant.getFirstName()).find(needle) != string::npos)
+			result++;
+		else if (lowerString(applicant.getLastName()).find(needle) != string::npos)
+			result++;
+		else if (lowerString(applicant.getJobTitle()).find(needle) != string::npos)
+			result++;
+		else if (lowerString(applicant.getLocation()).find(needle) != string::npos)
+			result++;
+		else if (lowerString(applicant.getPhoneNumber()).find(needle) != string::npos)
+			result++;
+		else if (lowerString(applicant.getEmail()).find(needle) != string::npos)
+			result++;
+	}
+	return (result);
+}
 
-vector <string> splitWords(string input, char del)
+vector <string> splitWords(string &input, char del)
 {
 	vector <size_t> delimiters {};
 	vector <string> words {};
@@ -263,18 +278,7 @@ void search(vector <Applicant> candidates, Settings &settings)
 	getline(cin, input);
 	for (auto applicant: candidates) // need to add to_lower conversion + nice layout
 	{
-//		multiFieldSearch(applicant, input);
-		if (applicant.getFirstName().find(input) != string::npos)
-			results.push_back(i);
-		else if (applicant.getLastName().find(input) != string::npos)
-			results.push_back(i);
-		else if (applicant.getJobTitle().find(input) != string::npos)
-			results.push_back(i);
-		else if (applicant.getLocation().find(input) != string::npos)
-			results.push_back(i);
-		else if (applicant.getPhoneNumber().find(input) != string::npos)
-			results.push_back(i);
-		else if (applicant.getEmail().find(input) != string::npos)
+		if (0 < multiFieldSearch(applicant, input))
 			results.push_back(i);
 		i++;
 	}

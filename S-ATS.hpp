@@ -52,10 +52,11 @@ void saveSettings(Settings &settings);
 void readSettings(Settings &settings);
 void initDelimiter(std::string line, Settings &settings);
 void saveAs(vector <Applicant> &candidates, Settings &settings);
+int multiFieldSearch(Applicant &applicant, string input);
 
 /* utilities.cpp */
 
-vector <std::string> splitWords(std::string input, char del);
+vector <std::string> splitWords(std::string &input, char del);
 vector <size_t> getDelimiterPos(const std::string line, char c);
 std::string center(std::string input, int width);
 void printLine(Settings &settings);
@@ -63,6 +64,7 @@ void clearScreen(void);
 std::string keyGenerator(void);
 std::string encryption(std::string str, std::string key, Settings &settings);
 std::string decryption(std::string str, std::string key, Settings &settings);
+string lowerString(string input);
 
 /* checkFunctions.cpp */
 
