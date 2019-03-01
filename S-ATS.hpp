@@ -65,6 +65,7 @@ std::string keyGenerator(void);
 std::string encryption(std::string str, std::string key, Settings &settings);
 std::string decryption(std::string str, std::string key, Settings &settings);
 string lowerString(string input);
+bool askSaveChanges(void);
 
 /* checkFunctions.cpp */
 

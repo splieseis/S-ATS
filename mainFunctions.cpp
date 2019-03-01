@@ -415,55 +415,36 @@ void saveCandidates(const vector <Applicant> &candidates, Settings &settings)
 {
 	string input {};
 	char delim = settings.getCsvDelimiter();
-	
-	cout << endl << "Do you want to save your changes? Y/N" << endl;
-	getline(cin, input);
-	while (!check(input, "YES") && !check(input, "NO"))
-	{
-		cout << endl << "Do you want to save your changes? Y/N" << endl;
-		getline(cin, input);
-	}
-	if (check(input, "YES"))
-	{
-		string path {"data\\"};
-//		string name {};
-//		string fileExtension {".csv"};
-		string key = keyGenerator();
-		ofstream myfile;
-		
-//		cout << "Filename: ";
-//		getline(cin, name);
-//		name.empty() ? name = DEFAULT_FILENAME : name = name;
-		myfile.open (path + settings.getFilename());
-		if (myfile.is_open())
-		{	
-			cout << endl << "Saving Candidates...";
-			if (settings.getEncryption())
-				myfile << key + "\n";
-			myfile << encryption("First Name", key, settings) + delim + encryption("Last Name", key, settings) + delim + encryption("Job Title", key, settings) + delim
-					+ encryption("Location", key, settings) + delim + encryption("Phone Number", key, settings) + delim + encryption("Email Address", key, settings) + "\n";
-			for (auto applicant: candidates)
-			{
-				myfile << 
-				  encryption(applicant.getFirstName(), key, settings) + delim 
-				+ encryption(applicant.getLastName(), key, settings) + delim 
-				+ encryption(applicant.getJobTitle(), key, settings) + delim 
-				+ encryption(applicant.getLocation(), key, settings) + delim 
-				+ encryption(applicant.getPhoneNumber(), key, settings) + delim 
-				+ encryption(applicant.getEmail(), key, settings) + "\n";
-			}
-			myfile.close();
-		}
-		else
+	string path {"data\\"};
+	string key = keyGenerator();
+	ofstream myfile;
+
+	myfile.open (path + settings.getFilename());
+	if (myfile.is_open())
+	{	
+		cout << endl << "Saving Candidates...";
+		if (settings.getEncryption())
+			myfile << key + "\n";
+		myfile << encryption("First Name", key, settings) + delim + encryption("Last Name", key, settings) + delim + encryption("Job Title", key, settings) + delim
+				+ encryption("Location", key, settings) + delim + encryption("Phone Number", key, settings) + delim + encryption("Email Address", key, settings) + "\n";
+		for (auto applicant: candidates)
 		{
-			cout << "Another program is currently using this file! Please close it first and then press Enter to save.\n";
-			getline(cin, input);
-			saveCandidates(candidates, settings);
+			myfile << 
+			  encryption(applicant.getFirstName(), key, settings) + delim 
+			+ encryption(applicant.getLastName(), key, settings) + delim 
+			+ encryption(applicant.getJobTitle(), key, settings) + delim 
+			+ encryption(applicant.getLocation(), key, settings) + delim 
+			+ encryption(applicant.getPhoneNumber(), key, settings) + delim 
+			+ encryption(applicant.getEmail(), key, settings) + "\n";
 		}
+		myfile.close();
 	}
 	else
-		cout << "Changes discarded!";
-	getline (cin, input);
+	{
+		cout << "Another program is currently using this file! Please close it first and then press Enter to save.\n";
+		getline(cin, input);
+		saveCandidates(candidates, settings);
+	}
 }
 
 void readSettings(Settings &settings)
@@ -659,12 +640,33 @@ void preferences(Settings &settings)
 void saveAs(vector <Applicant> &candidates, Settings &settings)
 {
 	string input {};
+	string name {};
+	ifstream myfile;
+	string path {"data\\"};
 	
 	printHeader("Save as...", settings);
-	cout << "New Filename: ";
-	getline(cin, input);
-	settings.setFilename(input + ".csv");
-	saveCandidates(candidates, settings);
+	cout << "\nNew Filename: ";
+	getline(cin, name);
+	myfile.open(path + name + ".csv");
+	if (myfile.is_open())
+	{
+		if (myfile.peek() != 'EOF')
+		{
+			myfile.close();
+			cout << "This file already exists! Are you sure you want to overwrite it? Y/N ";
+			getline(cin, input);
+			if (check(input, "YES"))
+			{
+				settings.setFilename(name + ".csv");
+				saveCandidates(candidates, settings);
+			}
+		}
+	}
+	else
+	{
+		settings.setFilename(name + ".csv");
+		saveCandidates(candidates, settings);
+	}
 }
 
 void exeMainMenu(vector <Applicant> &candidates, Settings &settings)

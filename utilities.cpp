@@ -87,3 +87,22 @@ string lowerString(string input)
 	}
 	return (input);
 }
+
+bool askSaveChanges(void)
+{
+	string input {};
+
+	do
+	{
+		cout << endl << "Do you want to save your changes? Y/N ";
+		getline(cin, input);
+		if (check(input, "YES"))
+			return (true);
+		else if (check(input, "NO"))
+		{
+			cout << "\nChanges discarded!";
+			getline(cin, input);
+			return (false);
+		}
+	} while (!check(input, "YES") && !check(input, "NO"));
+}

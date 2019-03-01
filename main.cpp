@@ -8,7 +8,9 @@ int main()
 	readSettings(settings);
 	readCandidates(candidates, settings);
 	exeMainMenu(candidates, settings);
-	saveCandidates(candidates, settings);
+	if (askSaveChanges())
+		saveCandidates(candidates, settings);
+	else
 	saveSettings(settings);
 	return (0);
 }
