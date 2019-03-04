@@ -24,10 +24,7 @@ void Settings::setLineChar(char c)
 
 void Settings::setEncryption(bool stage)
 {
-	if (stage == true)
-		this->_ENCRYPTION = true;
-	else 
-		this->_ENCRYPTION = false;
+	this->_ENCRYPTION = stage;
 	return ;
 }
 
@@ -40,6 +37,12 @@ void Settings::setFilename(string name)
 void Settings::setCsvDelimiter(char c)
 {
 	this->_CSV_DELIMITER = c;
+	return ;
+}
+
+void Settings::setVersionControl(bool stage)
+{
+	this->_VERSION_CONTROL = stage;
 	return ;
 }
 
@@ -68,4 +71,9 @@ string Settings::getFilename(void)
 char Settings::getCsvDelimiter(void)
 {
 	return (this->_CSV_DELIMITER);
+}
+
+bool Settings::getVersionControl(void)
+{
+	return (this->_VERSION_CONTROL);
 }

@@ -376,7 +376,7 @@ void readCandidates(vector <Applicant> &candidates, Settings &settings)
 	cout << "\nFilename: ";
 	getline(cin, name);
 	name.empty() ? name = "candidates" : name = name;
-	settings.setFilename(name + fileExtension);
+	settings.setFilename(name);
 	myfile.open (path + name + fileExtension);
 	if (myfile.is_open())
 	{
@@ -411,6 +411,18 @@ void readCandidates(vector <Applicant> &candidates, Settings &settings)
 		cout << "Unable to open the file!\n";
 }
 
+void savePreviousVersion(const vector <Applicant> &candidates, Settings &settings)
+{
+	if (settings.getVersionControl())
+	{
+		string fileName = settings.getFilename();
+		string versionName = fileName + " (" + getCurrentTime() + ")";
+		settings.setFilename(versionName);
+		saveCandidates(candidates, settings);
+		settings.setFilename(fileName);
+	}
+}
+
 void saveCandidates(const vector <Applicant> &candidates, Settings &settings)
 {
 	string input {};
@@ -419,7 +431,7 @@ void saveCandidates(const vector <Applicant> &candidates, Settings &settings)
 	string key = keyGenerator();
 	ofstream myfile;
 
-	myfile.open (path + settings.getFilename());
+	myfile.open (path + settings.getFilename() + ".csv");
 	if (myfile.is_open())
 	{	
 		cout << endl << "Saving Candidates...";
@@ -458,9 +470,11 @@ void readSettings(Settings &settings)
 	getline(xmlSettings, line);
 	settings.setLineChar(line[10]);
 	getline(xmlSettings, line);
-	settings.setEncryption(line[12]);
+	line[12] == '1' ? settings.setEncryption(true) : settings.setEncryption(false);
 	getline(xmlSettings, line);
 	settings.setCsvDelimiter(line[14]);
+	getline(xmlSettings, line);
+	line[16] == '1' ? settings.setVersionControl(true) : settings.setVersionControl(false);
 	xmlSettings.close();
 }
 
@@ -473,6 +487,7 @@ void saveSettings(Settings &settings)
 	xmlSettings << "<lineChar>" << settings.getLineChar() << "</lineChar>" << endl;
 	xmlSettings << "<encryption>" << settings.getEncryption() << "</encryption>" << endl;
 	xmlSettings << "<csvDelimiter>" << settings.getCsvDelimiter() << "</csvDelimiter>" << endl;
+	xmlSettings << "<versionControl>" << settings.getVersionControl() << "</versionControl>" << endl;
 	xmlSettings.close();
 }
 
@@ -549,6 +564,20 @@ void updateSettings(Settings &settings)
 			getline(cin, input);
 		}
 	}
+	else if (check(input, "VERSION"))
+	{
+		cout << "\nVersion Control turned ";
+		if (settings.getVersionControl())
+		{
+			cout << "[OFF]" << endl;
+			settings.setVersionControl(false);
+		}
+		else
+		{
+			cout << "[ON]" << endl;
+			settings.setVersionControl(true);
+		}
+	}
 	else if (check(input, "QUIT"))
 	{
 		clearScreen();
@@ -569,28 +598,29 @@ void updateSettings(Settings &settings)
 
 void printSettings(Settings &settings)
 {
-	cout << "Program Width: [" << settings.getProgramWidth() << "]\n";
-	cout << "Line char:     [" << settings.getLineChar() << "]\n";
-	cout << "Encryption:    [";
-	settings.getEncryption() ? cout << "ON]\n" : cout << "OFF]\n";
-	cout << "CSV Delimiter: [" << settings.getCsvDelimiter() << "]\n";
+	cout << "Program Width:		[" << settings.getProgramWidth() << "]\n";
+	cout << "Line char:		[" << settings.getLineChar() << "]\n";
+	cout << "CSV Delimiter:		[" << settings.getCsvDelimiter() << "]\n";
+	settings.getEncryption() ? cout << "Encryption:		[ON]\n" : cout << "Encryption:		[OFF]\n";
+	settings.getVersionControl() ? cout << "Version Control:	[ON]\n" : cout << "Version Control:	[OFF]\n";
 }
 
 void defaultSettings(Settings &settings, string selection)
 {
 	if (selection == "ALL")
 	{
-		settings.setProgramWidth(171);
+		settings.setProgramWidth(150);
 		settings.setLineChar('~');
 		settings.setEncryption(true);
 		settings.setCsvDelimiter(';');
+		settings.setVersionControl(false);
 		cout << "\nAll settings set to default!";
 		getline(cin, selection);
 	}
 	else if (selection == "WIDTH")
 	{
-		settings.setProgramWidth(171);
-		cout << "\nProgram Width set to default: [171]";
+		settings.setProgramWidth(150);
+		cout << "\nProgram Width set to default: [150]";
 		getline(cin, selection);
 	}
 	else if (selection == "LINE")

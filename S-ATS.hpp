@@ -53,9 +53,11 @@ void readSettings(Settings &settings);
 void initDelimiter(std::string line, Settings &settings);
 void saveAs(vector <Applicant> &candidates, Settings &settings);
 int multiFieldSearch(Applicant &applicant, string input);
+void savePreviousVersion(const vector <Applicant> &candidates, Settings &settings);
 
 /* utilities.cpp */
 
+string getCurrentTime();
 vector <std::string> splitWords(std::string &input, char del);
 vector <size_t> getDelimiterPos(const std::string line, char c);
 std::string center(std::string input, int width);

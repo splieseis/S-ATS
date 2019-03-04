@@ -106,3 +106,24 @@ bool askSaveChanges(void)
 		}
 	} while (!check(input, "YES") && !check(input, "NO"));
 }
+
+string getCurrentTime()
+{
+	string newTimeFormat {};
+	time_t tt;
+	
+	time (&tt);
+	string time = asctime(localtime(&tt));
+	int i {0};
+	while (time[i] != '\0')
+	{
+		if (time[i] == ':')
+			newTimeFormat.push_back('_');
+		else if (time[i] == '\n')
+			;
+		else
+			newTimeFormat.push_back(time[i]);
+		i++;
+	}
+	return (newTimeFormat);
+}

@@ -124,5 +124,10 @@ bool check(string input, string selection)
 		if (input == "Save as" || input == "save as" || input == "SAVE AS")
 			return (true);
 	}
+	else if (selection == "VERSION")
+	{
+		if (input == "Version Control" || input == "version control" || input == "version" || input == "v" || input == "V")
+			return (true);
+	}
 	return (false);
 }
