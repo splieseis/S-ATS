@@ -54,6 +54,7 @@ void initDelimiter(std::string line, Settings &settings);
 void saveAs(vector <Applicant> &candidates, Settings &settings);
 int multiFieldSearch(Applicant &applicant, string input);
 void savePreviousVersion(const vector <Applicant> &candidates, Settings &settings);
+void printMainMenu(Settings &settings);
 
 /* utilities.cpp */
 

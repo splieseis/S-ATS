@@ -105,6 +105,7 @@ bool askSaveChanges(void)
 			return (false);
 		}
 	} while (!check(input, "YES") && !check(input, "NO"));
+	return (true);
 }
 
 string getCurrentTime()

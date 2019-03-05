@@ -699,14 +699,29 @@ void saveAs(vector <Applicant> &candidates, Settings &settings)
 	}
 }
 
+void printMainMenu(Settings &settings)
+{
+	vector <string> menuOptions { "N - New Applicant  ", "L - List Applicants  ", "Search - Search  ", 
+									"P - Preferences  ", "I - Imprint  ", "Q - Quit" };
+	int max = settings.getProgramWidth() / 20;
+	int i {0};
+	for (auto option: menuOptions)
+	{
+		if (i != 0 && i % max == 0)
+			cout << endl;
+		cout << option;
+		i++;
+	}
+	cout << endl;
+}
+
 void exeMainMenu(vector <Applicant> &candidates, Settings &settings)
 {
 	string input {};
 	do
 	{
 		printHeader("Main Menu", settings);
-		cout << " N - New Applicant \tL - List Applicants \tSearch - Search \tZ - Clear screen"; // not ideal for resizing, vector with menu links
-		cout << "\tS - Settings \tI - Imprint \tQ - Quit " << endl;
+		printMainMenu(settings);
 		printLine(settings);
 		cout << endl;
 		cout << "What do you wanna do?: ";
